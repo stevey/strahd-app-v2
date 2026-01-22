@@ -1,0 +1,128 @@
+.name-generator {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+}
+
+.name-header {
+  margin-bottom: var(--spacing-sm);
+}
+
+.name-title {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.name-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.gen-btn {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-dark);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gen-btn:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.gen-btn.male:hover {
+  border-color: #4a7c9b;
+  box-shadow: 0 0 8px rgba(74, 124, 155, 0.3);
+}
+
+.gen-btn.female:hover {
+  border-color: #9b4a7c;
+  box-shadow: 0 0 8px rgba(155, 74, 124, 0.3);
+}
+
+.name-result {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--bg-dark);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.generated-name {
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--text-accent);
+}
+
+.copy-btn {
+  padding: 4px 8px;
+  font-size: 1rem;
+  background: transparent;
+  border: 1px solid var(--border-dark);
+  color: var(--text-secondary);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.history-section {
+  border-top: 1px solid var(--border-dark);
+  padding-top: var(--spacing-sm);
+}
+
+.history-toggle {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.history-toggle:hover {
+  color: var(--text-secondary);
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--spacing-sm) 0 0 0;
+  font-size: 0.85rem;
+}
+
+.history-item {
+  padding: 4px 0;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-item.male {
+  color: #7aa3bd;
+}
+
+.history-item.female {
+  color: #bd7aa3;
+}

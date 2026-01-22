@@ -1,0 +1,102 @@
+.calendar {
+  text-align: center;
+}
+
+.calendar-display {
+  margin-bottom: var(--spacing-lg);
+}
+
+.day-of-week {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.date-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: var(--spacing-sm);
+}
+
+.day-number {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--text-accent);
+  line-height: 1;
+}
+
+.month-name {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-primary);
+}
+
+.month-nickname {
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: var(--spacing-xs);
+}
+
+.year {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  margin-top: var(--spacing-sm);
+}
+
+.calendar-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.calendar-controls .reset-btn {
+  background: linear-gradient(180deg, #444 0%, #333 100%);
+  border-color: #555;
+}
+
+.calendar-controls .reset-btn:hover {
+  background: linear-gradient(180deg, #555 0%, #444 100%);
+  box-shadow: none;
+}
+
+.calendar-manual {
+  border-top: 1px solid var(--border-dark);
+  padding-top: var(--spacing-md);
+}
+
+.calendar-manual h3 {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.manual-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.manual-inputs label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.manual-inputs input,
+.manual-inputs select {
+  margin-top: var(--spacing-xs);
+  text-align: center;
+}

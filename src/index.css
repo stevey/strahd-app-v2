@@ -1,0 +1,185 @@
+:root {
+  /* Dark Gothic Theme Colors */
+  --bg-dark: #0d0d0d;
+  --bg-panel: #1a1a1a;
+  --bg-panel-hover: #252525;
+  --border-dark: #333333;
+  --border-accent: #4a0000;
+
+  /* Blood Red Accents */
+  --accent-primary: #8b0000;
+  --accent-secondary: #660000;
+  --accent-light: #a52a2a;
+  --accent-glow: rgba(139, 0, 0, 0.3);
+
+  /* Text Colors */
+  --text-primary: #e0d6c8;
+  --text-secondary: #a69f94;
+  --text-muted: #6b6560;
+  --text-accent: #c9a959;
+
+  /* Fonts */
+  --font-heading: 'Cinzel', serif;
+  --font-body: 'Crimson Text', serif;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Atmospheric fog background effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    radial-gradient(ellipse at 20% 80%, rgba(30, 30, 30, 0.8) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(40, 40, 40, 0.6) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(20, 20, 20, 0.4) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+/* Panel/Card styling - parchment-like with dark borders */
+.panel {
+  background: linear-gradient(145deg, var(--bg-panel) 0%, #151515 100%);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.panel-header {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--text-accent);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Button styling */
+button {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: linear-gradient(180deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-light);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background: linear-gradient(180deg, var(--accent-light) 0%, var(--accent-primary) 100%);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+/* Input styling */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: var(--spacing-sm);
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  width: 100%;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 5px var(--accent-glow);
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+}
+
+input[type="checkbox"]:checked {
+  background: var(--accent-primary);
+  border-color: var(--accent-light);
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-primary);
+  font-size: 12px;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}

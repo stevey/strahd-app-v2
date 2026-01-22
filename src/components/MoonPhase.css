@@ -1,0 +1,93 @@
+.moon-phase {
+  text-align: center;
+}
+
+.moon-display {
+  margin-bottom: var(--spacing-lg);
+}
+
+.moon-visual {
+  position: relative;
+  display: inline-block;
+  margin-bottom: var(--spacing-sm);
+}
+
+.moon-icon {
+  font-size: 5rem;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 200, 0.3));
+}
+
+.moon-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 255, 200, 0.4) 0%, transparent 70%);
+  pointer-events: none;
+  border-radius: 50%;
+}
+
+.moon-name {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-accent);
+  margin-bottom: var(--spacing-xs);
+}
+
+.moon-info {
+  color: var(--text-secondary);
+}
+
+.full-moon-warning {
+  color: var(--accent-light);
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.moon-cycle-bar {
+  margin: var(--spacing-lg) 0;
+  padding: 0 var(--spacing-md);
+}
+
+.cycle-track {
+  position: relative;
+  height: 8px;
+  background: var(--bg-dark);
+  border-radius: 4px;
+  border: 1px solid var(--border-dark);
+}
+
+.cycle-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  background: var(--accent-primary);
+  border: 2px solid var(--text-accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+
+.cycle-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--spacing-xs);
+  font-size: 1rem;
+  opacity: 0.6;
+}
+
+.moon-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border-dark);
+  padding-top: var(--spacing-md);
+  margin-top: var(--spacing-md);
+}

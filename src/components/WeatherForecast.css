@@ -1,0 +1,105 @@
+.weather-forecast {
+  margin-top: var(--spacing-lg);
+}
+
+.forecast-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-md);
+}
+
+.forecast-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.forecast-regenerate-btn {
+  font-size: 0.85rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: var(--spacing-sm);
+}
+
+.forecast-card {
+  background: linear-gradient(145deg, #0a0a0a 0%, #1a1a1a 100%);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-sm);
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.forecast-card:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.forecast-card.today {
+  border-color: var(--accent-primary);
+  background: linear-gradient(145deg, var(--accent-secondary) 0%, #1a0000 100%);
+}
+
+.forecast-day-label {
+  font-family: var(--font-heading);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-xs);
+}
+
+.forecast-card.today .forecast-day-label {
+  color: var(--accent-light);
+  font-weight: 600;
+}
+
+.forecast-date {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.forecast-weather-icon {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-xs);
+  filter: grayscale(0.3);
+}
+
+.forecast-card.today .forecast-weather-icon {
+  filter: grayscale(0);
+}
+
+.forecast-weather-name {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+}
+
+/* Responsive - stack on smaller screens */
+@media (max-width: 1200px) {
+  .forecast-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .forecast-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .forecast-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
