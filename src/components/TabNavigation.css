@@ -1,17 +1,18 @@
 .tab-nav {
   display: flex;
-  gap: 2px;
-  background: var(--bg-dark);
-  padding: 4px;
-  border-radius: var(--radius-md);
+  gap: 0;
+  background: transparent;
+  padding: 0;
   margin-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--accent-primary);
 }
 
 .tab-btn {
   flex: 1;
   padding: 10px 16px;
-  background: transparent;
-  border: none;
+  background: var(--bg-panel);
+  border: 2px solid var(--accent-primary);
+  border-bottom: none;
   color: var(--text-secondary);
   font-family: var(--font-heading);
   font-size: 0.9rem;
@@ -19,16 +20,19 @@
   letter-spacing: 0.1em;
   cursor: pointer;
   transition: all 0.2s ease;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  margin-bottom: -2px;
+  position: relative;
 }
 
 .tab-btn:hover {
   color: var(--text-primary);
-  background: rgba(139, 0, 0, 0.2);
+  background: rgba(139, 0, 0, 0.15);
 }
 
 .tab-btn.active {
-  background: var(--accent-primary);
-  color: var(--text-primary);
-  box-shadow: 0 0 10px var(--accent-glow);
+  background: var(--bg-dark);
+  color: var(--text-accent);
+  border-bottom: 2px solid var(--bg-dark);
+  z-index: 1;
 }

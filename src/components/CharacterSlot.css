@@ -2,10 +2,11 @@
   background: linear-gradient(145deg, var(--bg-panel) 0%, #151515 100%);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
-  padding: var(--spacing-md);
+  padding: var(--spacing-sm);
   transition: border-color 0.2s ease;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .character-slot.has-content {
@@ -17,15 +18,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-md);
+  gap: var(--spacing-xs);
+  width: 100%;
 }
 
 /* Portrait Upload Styles */
 .portrait-container {
   position: relative;
-  width: 100px;
-  height: 100px;
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   border: 2px dashed var(--border-dark);
   background: var(--bg-dark);
@@ -79,7 +80,7 @@
 
 .portrait-change-text {
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -95,14 +96,14 @@
 }
 
 .portrait-icon {
-  font-size: 2rem;
-  margin-bottom: var(--spacing-xs);
+  font-size: 1.2rem;
+  margin-bottom: 2px;
   filter: grayscale(1);
   opacity: 0.5;
 }
 
 .portrait-text {
-  font-size: 0.75rem;
+  font-size: 0.5rem;
   font-family: var(--font-heading);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -114,15 +115,15 @@
 
 .portrait-clear-btn {
   position: absolute;
-  top: -8px;
-  right: -8px;
-  width: 24px;
-  height: 24px;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: var(--accent-primary);
   border: 2px solid var(--bg-panel);
   color: var(--text-primary);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -145,13 +146,13 @@
 input[type="text"].character-name {
   width: 100%;
   font-family: var(--font-heading);
-  font-size: 1.4rem;
+  font-size: 0.95rem;
   text-align: center;
   background: transparent;
   border: none;
   border-bottom: 1px solid transparent;
   border-radius: 0;
-  padding: var(--spacing-sm) var(--spacing-xs);
+  padding: 4px 2px;
   color: var(--text-accent);
   cursor: pointer;
 }
@@ -169,133 +170,108 @@ input[type="text"].character-name:focus {
 input[type="text"].character-name::placeholder {
   color: var(--text-muted);
   font-style: italic;
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 
 .upload-error {
   color: var(--accent-light);
-  font-size: 0.75rem;
-  margin-bottom: var(--spacing-sm);
-  padding: var(--spacing-xs);
+  font-size: 0.65rem;
+  margin-top: 4px;
+  padding: 2px 4px;
   background: rgba(139, 0, 0, 0.1);
   border-radius: var(--radius-sm);
   text-align: center;
 }
 
-/* Text Section Styles */
-.text-section {
-  margin-bottom: var(--spacing-md);
+/* Death Indicator (compact) */
+.death-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 2px;
 }
 
-.text-section:last-of-type {
-  margin-bottom: var(--spacing-md);
+.death-indicator .death-skull {
+  font-size: 0.75rem;
 }
 
-.text-label {
-  display: block;
+.death-indicator .death-count {
+  font-family: var(--font-heading);
   font-size: 0.75rem;
   color: var(--text-accent);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: var(--spacing-xs);
-  font-family: var(--font-heading);
   font-weight: 600;
 }
 
-.text-area {
-  width: 100%;
-  font-size: 0.9rem;
-  resize: vertical;
-  min-height: 50px;
-  max-height: 200px;
-  font-family: var(--font-body);
-  line-height: 1.4;
-}
-
-.text-area::placeholder {
-  color: var(--text-muted);
-  font-style: italic;
-  opacity: 0.7;
-}
-
-/* Death Banner */
-.death-banner {
+/* Action Buttons */
+.slot-actions {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  background: linear-gradient(90deg, transparent, rgba(139, 0, 0, 0.4), transparent);
-  border-top: 1px solid var(--accent-primary);
-  border-bottom: 1px solid var(--accent-primary);
-  padding: 8px;
-  margin: var(--spacing-sm) calc(-1 * var(--spacing-md));
-}
-
-.death-display {
-  display: flex;
-  align-items: center;
   gap: 4px;
+  margin-top: var(--spacing-xs);
+  width: 100%;
 }
 
-.death-skull {
-  font-size: 1.1rem;
-}
-
-.death-count {
-  font-family: var(--font-heading);
-  font-size: 1rem;
-  color: var(--text-accent);
-  font-weight: 600;
-  min-width: 16px;
-  text-align: center;
-}
-
-.death-btn {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  background: var(--bg-dark);
-  border: 1px solid var(--border-dark);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.death-btn:hover:not(:disabled) {
-  border-color: var(--accent-primary);
-  color: var(--text-accent);
-  background: rgba(139, 0, 0, 0.2);
-}
-
-.death-btn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-/* Retire Button */
-.retire-btn {
-  margin-top: var(--spacing-sm);
-  padding: 8px 12px;
+.details-btn {
+  flex: 1;
+  padding: 4px 6px;
   background: transparent;
   border: 1px solid var(--border-dark);
   color: var(--text-muted);
-  font-size: 0.75rem;
+  font-size: 0.6rem;
   font-family: var(--font-heading);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  text-transform: lowercase;
+  letter-spacing: 0.03em;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 100%;
+  border-radius: var(--radius-sm);
 }
 
-.retire-btn:hover {
+.details-btn:hover {
   border-color: var(--accent-primary);
-  color: var(--accent-light);
+  color: var(--text-accent);
   background: rgba(139, 0, 0, 0.1);
+}
+
+.sheet-link-btn {
+  flex: 1;
+  padding: 4px 6px;
+  background: transparent;
+  border: 1px solid var(--border-accent);
+  color: var(--text-accent);
+  font-size: 0.6rem;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.sheet-link-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+  background: rgba(139, 0, 0, 0.15);
+}
+
+.sheet-link-btn .ddb-icon {
+  width: 10px;
+  height: 10px;
+  object-fit: contain;
+}
+
+.sheet-link-placeholder {
+  flex: 1;
+  padding: 4px 6px;
+  font-size: 0.55rem;
+  font-family: var(--font-body);
+  color: var(--text-muted);
+  opacity: 0.5;
+  text-align: center;
+  font-style: italic;
 }

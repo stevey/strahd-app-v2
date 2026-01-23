@@ -8,6 +8,7 @@ import Weather from './components/Weather';
 import MoonPhase from './components/MoonPhase';
 import NameGenerator from './components/NameGenerator';
 import CharacterSlot from './components/CharacterSlot';
+import CharacterDetailsPanel from './components/CharacterDetailsPanel';
 import Timeline from './components/Timeline';
 import EventModal from './components/EventModal';
 import AdminControls from './components/AdminControls';
@@ -17,9 +18,11 @@ const DEFAULT_CHARACTER = {
   name: '',
   portrait: null,
   conditions: '',
+  fears: '',
   darkGifts: '',
   fortune: '',
   notes: '',
+  dndBeyondLink: '',
   deaths: 0
 };
 
@@ -38,6 +41,7 @@ export default function App() {
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
   const [eventFormDate, setEventFormDate] = useState(date);
+  const [selectedCharacterIndex, setSelectedCharacterIndex] = useState(null);
 
   // Ensure current weather matches forecast day 0 on initial load
   useEffect(() => {
@@ -109,6 +113,11 @@ export default function App() {
   const handleRetireCharacter = (index) => {
     const newCharacters = characters.filter((_, i) => i !== index);
     setCharacters(newCharacters);
+    if (selectedCharacterIndex === index) {
+      setSelectedCharacterIndex(null);
+    } else if (selectedCharacterIndex > index) {
+      setSelectedCharacterIndex(selectedCharacterIndex - 1);
+    }
   };
 
   const handleAddCharacter = () => {
@@ -208,8 +217,27 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>Curse of Strahd</h1>
-        <p className="subtitle">Dungeon Master's Tracker</p>
+        <h1>Curse of Strahd Tracker</h1>
+        <div className="header-shortcuts">
+          <a
+            href="https://www.dndbeyond.com/sources/dnd/cos"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shortcut-link"
+            title="D&D Beyond - Curse of Strahd"
+          >
+            <img src="/images/dndbeyond-icon.png" alt="D&D Beyond" />
+          </a>
+          <a
+            href="https://app.roll20.net/editor/setcampaign/20397133"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="shortcut-link"
+            title="Roll20 Campaign"
+          >
+            <img src="/images/roll20.png" alt="Roll20" />
+          </a>
+        </div>
       </header>
 
       <main className="app-main">
@@ -259,7 +287,7 @@ export default function App() {
                   key={index}
                   character={character}
                   onChange={(c) => handleCharacterChange(index, c)}
-                  onRetire={() => handleRetireCharacter(index)}
+                  onShowDetails={() => setSelectedCharacterIndex(index)}
                 />
               ))}
               <button className="add-character-btn" onClick={handleAddCharacter}>
@@ -267,6 +295,18 @@ export default function App() {
               </button>
             </div>
           </section>
+        )}
+
+        {selectedCharacterIndex !== null && characters[selectedCharacterIndex] && (
+          <CharacterDetailsPanel
+            character={characters[selectedCharacterIndex]}
+            onChange={(c) => handleCharacterChange(selectedCharacterIndex, c)}
+            onClose={() => setSelectedCharacterIndex(null)}
+            onRetire={() => {
+              handleRetireCharacter(selectedCharacterIndex);
+              setSelectedCharacterIndex(null);
+            }}
+          />
         )}
       </main>
 

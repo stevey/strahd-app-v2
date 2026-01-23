@@ -88,6 +88,16 @@ export default function EventModal({ isOpen, onClose, onSave, event, currentDate
           </div>
 
           <div className="form-group">
+            <label>Description</label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => handleChange('description', e.target.value)}
+              placeholder="Additional details about this event..."
+              rows={3}
+            />
+          </div>
+
+          <div className="form-group">
             <label>Date</label>
             <div className="date-inputs">
               <input
@@ -114,16 +124,6 @@ export default function EventModal({ isOpen, onClose, onSave, event, currentDate
                 placeholder="Year"
               />
             </div>
-          </div>
-
-          <div className="form-group">
-            <label>Description</label>
-            <textarea
-              value={formData.description}
-              onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="Additional details about this event..."
-              rows={4}
-            />
           </div>
 
           <div className="form-actions">

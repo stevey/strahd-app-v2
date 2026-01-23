@@ -16,8 +16,8 @@
   background: var(--bg-panel);
   border: 2px solid var(--border-accent);
   border-radius: var(--radius-md);
-  padding: var(--spacing-xl);
-  max-width: 600px;
+  padding: var(--spacing-md);
+  max-width: 700px;
   width: 90%;
   max-height: 90vh;
   overflow-y: auto;
@@ -28,14 +28,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--spacing-lg);
-  padding-bottom: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  padding-bottom: var(--spacing-sm);
   border-bottom: 1px solid var(--border-accent);
 }
 
 .modal-header h2 {
   font-family: var(--font-heading);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   color: var(--text-accent);
   margin: 0;
 }
@@ -65,18 +65,18 @@
 .event-form {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-lg);
+  gap: var(--spacing-sm);
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 4px;
 }
 
 .form-group label {
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--text-accent);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -85,15 +85,15 @@
 .type-selector {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-sm);
+  gap: var(--spacing-xs);
 }
 
 .type-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-md);
+  gap: 2px;
+  padding: var(--spacing-sm);
   background: var(--bg-dark);
   border: 2px solid transparent;
   border-radius: var(--radius-sm);
@@ -113,11 +113,11 @@
 }
 
 .type-icon {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .type-label {
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   font-family: var(--font-heading);
   letter-spacing: 0.05em;
 }
@@ -131,17 +131,17 @@
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--spacing-md);
-  margin-top: var(--spacing-md);
-  padding-top: var(--spacing-md);
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
   border-top: 1px solid var(--border-dark);
 }
 
 .btn-primary,
 .btn-secondary {
-  padding: var(--spacing-sm) var(--spacing-lg);
+  padding: var(--spacing-xs) var(--spacing-md);
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all 0.2s ease;

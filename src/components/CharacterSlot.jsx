@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { processPortraitImage, handleFileDrop, handleFileSelect } from '../utils/imageUtils';
 import './CharacterSlot.css';
 
-export default function CharacterSlot({ character, onChange, onRetire }) {
+export default function CharacterSlot({ character, onChange, onShowDetails }) {
   const fileInputRef = useRef(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState(null);
@@ -12,45 +12,6 @@ export default function CharacterSlot({ character, onChange, onRetire }) {
 
   const handleNameChange = (e) => {
     onChange({ ...character, name: e.target.value });
-  };
-
-  const handleConditionsChange = (e) => {
-    onChange({ ...character, conditions: e.target.value });
-  };
-
-  const handleDarkGiftsChange = (e) => {
-    onChange({ ...character, darkGifts: e.target.value });
-  };
-
-  const handleFortuneChange = (e) => {
-    onChange({ ...character, fortune: e.target.value });
-  };
-
-  const handleNotesChange = (e) => {
-    onChange({ ...character, notes: e.target.value });
-  };
-
-  const handleRetire = () => {
-    const name = character.name || 'this character';
-    if (confirm(`Retire ${name}? This will permanently remove this character slot and all their data.`)) {
-      onRetire();
-    }
-  };
-
-  const handleAddDeath = () => {
-    const name = character.name || 'this character';
-    if (confirm(`Record a death for ${name}?`)) {
-      onChange({ ...character, deaths: deaths + 1 });
-    }
-  };
-
-  const handleRemoveDeath = () => {
-    if (deaths > 0) {
-      const name = character.name || 'this character';
-      if (confirm(`Remove a death from ${name}?`)) {
-        onChange({ ...character, deaths: deaths - 1 });
-      }
-    }
   };
 
   // Portrait upload handlers
@@ -106,7 +67,8 @@ export default function CharacterSlot({ character, onChange, onRetire }) {
 
   const hasContent = character.name || character.portrait ||
                      character.conditions || character.darkGifts ||
-                     character.fortune || character.notes || deaths > 0;
+                     character.fortune || character.notes || character.fears ||
+                     character.dndBeyondLink || deaths > 0;
 
   return (
     <div className={`character-slot ${hasContent ? 'has-content' : ''}`}>
@@ -162,75 +124,32 @@ export default function CharacterSlot({ character, onChange, onRetire }) {
         <div className="upload-error">{uploadError}</div>
       )}
 
-      <div className="text-section">
-        <label className="text-label">Conditions</label>
-        <textarea
-          placeholder="Blinded, Charmed, Cursed, Frightened..."
-          value={character.conditions || ''}
-          onChange={handleConditionsChange}
-          rows={2}
-          className="text-area"
-        />
-      </div>
-
-      <div className="text-section">
-        <label className="text-label">Dark Gifts</label>
-        <textarea
-          placeholder="Dark powers bestowed by the Dark Powers..."
-          value={character.darkGifts || ''}
-          onChange={handleDarkGiftsChange}
-          rows={2}
-          className="text-area"
-        />
-      </div>
-
-      <div className="text-section">
-        <label className="text-label">Fortune</label>
-        <textarea
-          placeholder="Madam Eva's Tarokka reading..."
-          value={character.fortune || ''}
-          onChange={handleFortuneChange}
-          rows={2}
-          className="text-area"
-        />
-      </div>
-
-      <div className="text-section">
-        <label className="text-label">Notes</label>
-        <textarea
-          placeholder="HP, items, status effects, story notes..."
-          value={character.notes || ''}
-          onChange={handleNotesChange}
-          rows={2}
-          className="text-area"
-        />
-      </div>
-
-      <div className="death-banner">
-        <button
-          className="death-btn death-minus"
-          onClick={handleRemoveDeath}
-          disabled={deaths === 0}
-          title="Remove a death"
-        >
-          −
-        </button>
-        <span className="death-display">
+      {deaths > 0 && (
+        <div className="death-indicator">
           <span className="death-skull">💀</span>
           <span className="death-count">{deaths}</span>
-        </span>
-        <button
-          className="death-btn death-plus"
-          onClick={handleAddDeath}
-          title="Record a death"
-        >
-          +
-        </button>
-      </div>
+        </div>
+      )}
 
-      <button className="retire-btn" onClick={handleRetire}>
-        Retire Character
-      </button>
+      <div className="slot-actions">
+        <button className="details-btn" onClick={onShowDetails}>
+          details
+        </button>
+        {character.dndBeyondLink ? (
+          <a
+            href={character.dndBeyondLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sheet-link-btn"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img src="/images/dndbeyond-icon.png" alt="" className="ddb-icon" />
+            D&D Beyond
+          </a>
+        ) : (
+          <span className="sheet-link-placeholder">no sheet</span>
+        )}
+      </div>
     </div>
   );
 }
