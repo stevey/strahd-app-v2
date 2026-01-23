@@ -1,7 +1,7 @@
 import './TabNavigation.css';
 
 const TABS = [
-  { id: 'dashboard', label: 'Dashboard' },
+  { id: 'dashboard', label: 'Environment' },
   { id: 'timeline', label: 'Timeline' },
   { id: 'characters', label: 'Characters' }
 ];

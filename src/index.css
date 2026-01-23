@@ -57,32 +57,32 @@ body::before {
   right: 0;
   bottom: 0;
   background:
-    /* Burn marks and dark spots */
-    radial-gradient(ellipse at 15% 10%, rgba(0, 0, 0, 0.4) 0%, transparent 25%),
-    radial-gradient(ellipse at 85% 85%, rgba(0, 0, 0, 0.35) 0%, transparent 30%),
-    radial-gradient(ellipse at 70% 15%, rgba(0, 0, 0, 0.3) 0%, transparent 20%),
-    radial-gradient(ellipse at 25% 90%, rgba(0, 0, 0, 0.25) 0%, transparent 25%),
-    /* Subtle warm wood/parchment undertones */
-    radial-gradient(ellipse at 50% 50%, rgba(30, 20, 10, 0.3) 0%, transparent 60%),
-    radial-gradient(ellipse at 30% 40%, rgba(25, 18, 8, 0.2) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 60%, rgba(35, 22, 12, 0.25) 0%, transparent 55%),
-    /* Grain texture simulation */
+    /* Burn marks and dark spots in corners */
+    radial-gradient(ellipse at 0% 0%, rgba(20, 10, 5, 0.7) 0%, transparent 35%),
+    radial-gradient(ellipse at 100% 100%, rgba(15, 8, 3, 0.6) 0%, transparent 40%),
+    radial-gradient(ellipse at 100% 0%, rgba(18, 10, 5, 0.5) 0%, transparent 30%),
+    radial-gradient(ellipse at 0% 100%, rgba(12, 6, 2, 0.5) 0%, transparent 35%),
+    /* Warm wood/parchment undertones */
+    radial-gradient(ellipse at 50% 50%, rgba(45, 30, 15, 0.4) 0%, transparent 70%),
+    radial-gradient(ellipse at 25% 30%, rgba(40, 25, 12, 0.3) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 70%, rgba(50, 32, 18, 0.35) 0%, transparent 55%),
+    /* Subtle grain texture */
     repeating-linear-gradient(
       90deg,
       transparent 0px,
-      transparent 2px,
-      rgba(20, 15, 10, 0.03) 2px,
-      rgba(20, 15, 10, 0.03) 4px
+      transparent 3px,
+      rgba(30, 20, 10, 0.08) 3px,
+      rgba(30, 20, 10, 0.08) 6px
     ),
     repeating-linear-gradient(
       0deg,
       transparent 0px,
-      transparent 3px,
-      rgba(15, 10, 5, 0.02) 3px,
-      rgba(15, 10, 5, 0.02) 6px
+      transparent 4px,
+      rgba(25, 15, 8, 0.06) 4px,
+      rgba(25, 15, 8, 0.06) 8px
     );
   pointer-events: none;
-  z-index: -1;
+  z-index: 0;
 }
 
 h1, h2, h3, h4, h5, h6 {

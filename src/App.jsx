@@ -90,8 +90,11 @@ export default function App() {
   };
 
   const handleRegenerateForecast = () => {
-    setForecast(generate7DayForecast());
+    const newForecast = generate7DayForecast();
+    setForecast(newForecast);
     setForecastDate(getTotalDays(date));
+    // Update current weather to match new forecast day 0
+    setWeatherId(newForecast[0].weatherId);
   };
 
   // Handle weather change - sync current weather with forecast day 0
