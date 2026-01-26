@@ -176,7 +176,7 @@ export default function App() {
 
   const handleExportData = () => {
     const exportData = {
-      version: '2.0',
+      version: '2.1',
       exportDate: new Date().toISOString(),
       data: {
         date,
@@ -185,7 +185,8 @@ export default function App() {
         forecastDate,
         characters,
         events,
-        weatherHistory
+        weatherHistory,
+        cardDraw
       }
     };
 
@@ -212,6 +213,7 @@ export default function App() {
       if (data.characters) setCharacters(data.characters);
       if (data.events) setEvents(data.events);
       if (data.weatherHistory) setWeatherHistory(data.weatherHistory);
+      if (data.cardDraw !== undefined) setCardDraw(data.cardDraw);
 
       alert('Data imported successfully!');
     } catch (error) {
