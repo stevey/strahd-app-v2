@@ -1,6 +1,27 @@
+import { useRef, useEffect } from 'react';
 import './CharacterDetailsPanel.css';
 
 export default function CharacterDetailsPanel({ character, onChange, onClose, onRetire }) {
+  const textareaRefs = useRef({});
+
+  // Auto-resize textareas
+  const autoResize = (textarea) => {
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+    }
+  };
+
+  // Resize all textareas on mount and when character changes
+  useEffect(() => {
+    Object.values(textareaRefs.current).forEach(autoResize);
+  }, [character]);
+
+  const handleTextareaChange = (field, e) => {
+    onChange({ ...character, [field]: e.target.value });
+    autoResize(e.target);
+  };
+
   if (!character) return null;
 
   const deaths = character.deaths || 0;
@@ -10,26 +31,6 @@ export default function CharacterDetailsPanel({ character, onChange, onClose, on
     if (confirm(`Retire ${name}? This will permanently remove this character slot and all their data.`)) {
       onRetire();
     }
-  };
-
-  const handleConditionsChange = (e) => {
-    onChange({ ...character, conditions: e.target.value });
-  };
-
-  const handleFearsChange = (e) => {
-    onChange({ ...character, fears: e.target.value });
-  };
-
-  const handleDarkGiftsChange = (e) => {
-    onChange({ ...character, darkGifts: e.target.value });
-  };
-
-  const handleFortuneChange = (e) => {
-    onChange({ ...character, fortune: e.target.value });
-  };
-
-  const handleNotesChange = (e) => {
-    onChange({ ...character, notes: e.target.value });
   };
 
   const handleDndBeyondLinkChange = (e) => {
@@ -74,55 +75,60 @@ export default function CharacterDetailsPanel({ character, onChange, onClose, on
           <div className="panel-section">
             <label className="panel-label">Conditions</label>
             <textarea
+              ref={el => textareaRefs.current.conditions = el}
               placeholder="Blinded, Charmed, Cursed, Frightened..."
               value={character.conditions || ''}
-              onChange={handleConditionsChange}
+              onChange={(e) => handleTextareaChange('conditions', e)}
               rows={2}
-              className="panel-textarea"
+              className="panel-textarea auto-resize"
             />
           </div>
 
           <div className="panel-section">
             <label className="panel-label">Fears</label>
             <textarea
+              ref={el => textareaRefs.current.fears = el}
               placeholder="What terrifies this character..."
               value={character.fears || ''}
-              onChange={handleFearsChange}
+              onChange={(e) => handleTextareaChange('fears', e)}
               rows={2}
-              className="panel-textarea"
+              className="panel-textarea auto-resize"
             />
           </div>
 
           <div className="panel-section">
             <label className="panel-label">Dark Gifts</label>
             <textarea
+              ref={el => textareaRefs.current.darkGifts = el}
               placeholder="Dark powers bestowed by the Dark Powers..."
               value={character.darkGifts || ''}
-              onChange={handleDarkGiftsChange}
+              onChange={(e) => handleTextareaChange('darkGifts', e)}
               rows={2}
-              className="panel-textarea"
+              className="panel-textarea auto-resize"
             />
           </div>
 
           <div className="panel-section">
             <label className="panel-label">Fortune</label>
             <textarea
+              ref={el => textareaRefs.current.fortune = el}
               placeholder="Madam Eva's Tarokka reading..."
               value={character.fortune || ''}
-              onChange={handleFortuneChange}
+              onChange={(e) => handleTextareaChange('fortune', e)}
               rows={2}
-              className="panel-textarea"
+              className="panel-textarea auto-resize"
             />
           </div>
 
           <div className="panel-section">
             <label className="panel-label">Notes</label>
             <textarea
+              ref={el => textareaRefs.current.notes = el}
               placeholder="HP, items, status effects, story notes..."
               value={character.notes || ''}
-              onChange={handleNotesChange}
+              onChange={(e) => handleTextareaChange('notes', e)}
               rows={3}
-              className="panel-textarea"
+              className="panel-textarea auto-resize"
             />
           </div>
 
@@ -157,27 +163,29 @@ export default function CharacterDetailsPanel({ character, onChange, onClose, on
             )}
           </div>
 
-          <div className="panel-death-section">
-            <button
-              className="panel-death-btn"
-              onClick={handleRemoveDeath}
-              disabled={deaths === 0}
-            >
-              -
-            </button>
-            <span className="panel-death-display">
-              <span className="panel-death-skull">💀</span>
-              <span className="panel-death-count">{deaths}</span>
-            </span>
-            <button
-              className="panel-death-btn"
-              onClick={handleAddDeath}
-            >
-              +
-            </button>
-          </div>
-
-          <div className="panel-retire-section">
+          <div className="panel-footer">
+            <div className="panel-death-row">
+              <span className="panel-death-label">Deaths</span>
+              <div className="panel-death-controls">
+                <button
+                  className="panel-death-btn"
+                  onClick={handleRemoveDeath}
+                  disabled={deaths === 0}
+                >
+                  -
+                </button>
+                <span className="panel-death-display">
+                  <span className="panel-death-skull">💀</span>
+                  <span className="panel-death-count">{deaths}</span>
+                </span>
+                <button
+                  className="panel-death-btn"
+                  onClick={handleAddDeath}
+                >
+                  +
+                </button>
+              </div>
+            </div>
             <button className="panel-retire-btn" onClick={handleRetire}>
               Retire Character
             </button>

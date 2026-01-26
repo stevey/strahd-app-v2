@@ -12,6 +12,7 @@ import CharacterDetailsPanel from './components/CharacterDetailsPanel';
 import Timeline from './components/Timeline';
 import EventModal from './components/EventModal';
 import AdminControls from './components/AdminControls';
+import CardDraw from './components/CardDraw';
 import './App.css';
 
 const DEFAULT_CHARACTER = {
@@ -37,6 +38,7 @@ export default function App() {
   const [events, setEvents] = useLocalStorage('strahd-events', []);
   const [weatherHistory, setWeatherHistory] = useLocalStorage('strahd-weather-history', []);
   const [activeTab, setActiveTab] = useLocalStorage('strahd-active-tab', 'dashboard');
+  const [cardDraw, setCardDraw] = useLocalStorage('strahd-card-draw', null);
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
@@ -220,6 +222,9 @@ export default function App() {
   return (
     <div className="app">
       <header className="app-header">
+        <div className="header-card">
+          <CardDraw value={cardDraw} onChange={setCardDraw} />
+        </div>
         <h1>Curse of Strahd Tracker</h1>
         <div className="header-shortcuts">
           <a
