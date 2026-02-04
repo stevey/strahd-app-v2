@@ -13,6 +13,7 @@ import Timeline from './components/Timeline';
 import EventModal from './components/EventModal';
 import AdminControls from './components/AdminControls';
 import CardDraw from './components/CardDraw';
+import EnvironmentSummary from './components/EnvironmentSummary';
 import './App.css';
 
 const DEFAULT_CHARACTER = {
@@ -327,6 +328,7 @@ export default function App() {
           onExportData={handleExportData}
           onImportData={handleImportData}
         />
+        <EnvironmentSummary date={date} weatherId={weatherId} cardDraw={cardDraw} />
       </footer>
 
       <EventModal
