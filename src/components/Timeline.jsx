@@ -2,15 +2,17 @@ import { useState, useRef, useEffect } from 'react';
 import { getTotalDays, dateFromTotalDays, MONTHS, getDayOfWeek } from '../data/calendar';
 import { getEventTypeColor, getEventTypeIcon } from '../data/eventTypes';
 import { getWeatherById } from '../data/weather';
+import DayEventsPanel from './DayEventsPanel';
 import './Timeline.css';
 
 const DAYS_TO_SHOW = 21; // Show 3 weeks at a time
 const NAVIGATION_STEP = 7; // Navigate by 1 week
 
-export default function Timeline({ events, currentDate, currentWeatherId, onEventClick, onAddEvent, weatherHistory = [] }) {
+export default function Timeline({ events, currentDate, currentWeatherId, onEventClick, onAddEvent, onDeleteEvent, onReorderEvent, weatherHistory = [] }) {
   const [hoveredEvent, setHoveredEvent] = useState(null);
   const [hoveredWeather, setHoveredWeather] = useState(null);
   const [viewOffset, setViewOffset] = useState(0); // Days offset from today
+  const [selectedDay, setSelectedDay] = useState(() => getTotalDays(currentDate));
   const scrollRef = useRef(null);
 
   const currentTotalDays = getTotalDays(currentDate);
@@ -60,6 +62,9 @@ export default function Timeline({ events, currentDate, currentWeatherId, onEven
     weatherByDay[entry.totalDays] = entry.weatherId;
   });
 
+  const selectedDate = selectedDay !== null ? dateFromTotalDays(selectedDay) : null;
+  const selectedDayEvents = selectedDay !== null ? (eventsByDay[selectedDay] || []) : [];
+
   return (
     <div className="timeline-container">
       <div className="timeline-header">
@@ -95,6 +100,7 @@ export default function Timeline({ events, currentDate, currentWeatherId, onEven
             const date = dateFromTotalDays(day);
             const isToday = day === currentTotalDays;
             const isPast = day < currentTotalDays;
+            const isSelected = day === selectedDay;
             const dayEvents = eventsByDay[day] || [];
             // Use current weather for today, otherwise look up from history
             const dayWeatherId = isToday ? currentWeatherId : weatherByDay[day];
@@ -106,10 +112,10 @@ export default function Timeline({ events, currentDate, currentWeatherId, onEven
                 className={`timeline-day ${isToday ? 'today' : ''} ${isPast ? 'past' : 'future'}`}
               >
                 <div
-                  className="day-marker"
-                  onClick={() => onAddEvent(date)}
+                  className={`day-marker ${isSelected ? 'selected' : ''}`}
+                  onClick={() => setSelectedDay(day)}
                   style={{ cursor: 'pointer' }}
-                  title="Click to add event on this date"
+                  title="Click to view day events"
                 >
                   {dayWeather && (
                     <div
@@ -129,14 +135,14 @@ export default function Timeline({ events, currentDate, currentWeatherId, onEven
 
                 {dayEvents.length > 0 && (
                   <div className="day-events">
-                    {dayEvents.map((event, idx) => (
+                    {dayEvents.slice(0, 1).map((event, idx) => (
                       <div
                         key={event.id || idx}
                         className="event-marker"
                         style={{ backgroundColor: getEventTypeColor(event.type) }}
                         onMouseEnter={() => setHoveredEvent(event)}
                         onMouseLeave={() => setHoveredEvent(null)}
-                        onClick={() => onEventClick(event)}
+                        onClick={(e) => { e.stopPropagation(); onEventClick(event); }}
                         title={event.title}
                       >
                         <span className="event-icon">{getEventTypeIcon(event.type)}</span>
@@ -152,6 +158,18 @@ export default function Timeline({ events, currentDate, currentWeatherId, onEven
           })}
         </div>
       </div>
+
+      {selectedDay !== null && selectedDate && (
+        <DayEventsPanel
+          selectedDay={selectedDay}
+          selectedDate={selectedDate}
+          events={selectedDayEvents}
+          onReorder={onReorderEvent}
+          onEditEvent={onEventClick}
+          onDeleteEvent={onDeleteEvent}
+          onAddEvent={onAddEvent}
+        />
+      )}
 
       {hoveredEvent && (
         <div className="event-tooltip">

@@ -2,7 +2,7 @@ import { WEATHER_TYPES, getWeatherById, getNextWeather } from '../data/weather';
 import WeatherForecast from './WeatherForecast';
 import './Weather.css';
 
-export default function Weather({ weatherId, onWeatherChange, forecast, onRegenerateForecast, currentDate }) {
+export default function Weather({ weatherId, onWeatherChange, forecast, onRegenerateForecast, currentDate, onForecastDayChange }) {
   const weather = getWeatherById(weatherId);
 
   const handleCycle = () => {
@@ -36,6 +36,7 @@ export default function Weather({ weatherId, onWeatherChange, forecast, onRegene
           forecast={forecast}
           currentDate={currentDate}
           onRegenerate={onRegenerateForecast}
+          onForecastDayChange={onForecastDayChange}
         />
       )}
     </div>

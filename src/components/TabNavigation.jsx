@@ -3,6 +3,7 @@ import './TabNavigation.css';
 const TABS = [
   { id: 'dashboard', label: 'Environment' },
   { id: 'timeline', label: 'Timeline' },
+  { id: 'fortunes', label: 'Fortunes' },
   { id: 'characters', label: 'Characters' }
 ];
 

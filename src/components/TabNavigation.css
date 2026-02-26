@@ -31,8 +31,8 @@
 }
 
 .tab-btn.active {
-  background: var(--bg-dark);
-  color: var(--text-accent);
-  border-bottom: 2px solid var(--bg-dark);
+  background: var(--accent-primary);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--accent-primary);
   z-index: 1;
 }

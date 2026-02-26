@@ -72,6 +72,28 @@ export default function CharacterDetailsPanel({ character, onChange, onClose, on
         </div>
 
         <div className="panel-content">
+          <div className="panel-section panel-color-section">
+            <label className="panel-label">Character Colour</label>
+            <div className="panel-color-row">
+              <input
+                type="color"
+                className="panel-color-input"
+                value={character.color || '#8b0000'}
+                onChange={(e) => onChange({ ...character, color: e.target.value })}
+              />
+              {character.color ? (
+                <button
+                  className="panel-color-clear"
+                  onClick={() => onChange({ ...character, color: null })}
+                >
+                  Clear
+                </button>
+              ) : (
+                <span className="panel-color-none">No colour set</span>
+              )}
+            </div>
+          </div>
+
           <div className="panel-section">
             <label className="panel-label">Conditions</label>
             <textarea

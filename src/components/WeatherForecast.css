@@ -23,10 +23,15 @@
   padding: var(--spacing-xs) var(--spacing-sm);
 }
 
+.forecast-grid-wrapper {
+  overflow-x: auto;
+}
+
 .forecast-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: var(--spacing-sm);
+  min-width: 560px;
 }
 
 .forecast-card {
@@ -36,6 +41,8 @@
   padding: var(--spacing-sm);
   text-align: center;
   transition: all 0.2s ease;
+  cursor: pointer;
+  min-width: 80px;
 }
 
 .forecast-card:hover {
@@ -85,21 +92,25 @@
   font-family: var(--font-heading);
 }
 
-/* Responsive - stack on smaller screens */
-@media (max-width: 1200px) {
-  .forecast-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.forecast-card.selected {
+  border-color: var(--accent-light);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
-@media (max-width: 768px) {
-  .forecast-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.forecast-weather-select {
+  width: 100%;
+  font-size: 0.7rem;
+  font-family: var(--font-heading);
+  background: var(--bg-dark);
+  color: var(--text-primary);
+  border: 1px solid var(--accent-primary);
+  border-radius: var(--radius-sm);
+  padding: 2px 4px;
+  margin-top: 2px;
+  cursor: pointer;
 }
 
-@media (max-width: 480px) {
-  .forecast-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.forecast-weather-select:focus {
+  outline: none;
+  border-color: var(--accent-light);
 }

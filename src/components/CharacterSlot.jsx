@@ -79,6 +79,7 @@ export default function CharacterSlot({ character, onChange, onShowDetails }) {
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
+          style={character.color ? { boxShadow: `0 0 0 3px ${character.color}, 0 0 8px ${character.color}40`, border: `2px solid ${character.color}` } : undefined}
         >
           {character.portrait ? (
             <>

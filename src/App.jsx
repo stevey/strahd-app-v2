@@ -14,6 +14,7 @@ import EventModal from './components/EventModal';
 import AdminControls from './components/AdminControls';
 import CardDraw from './components/CardDraw';
 import EnvironmentSummary from './components/EnvironmentSummary';
+import Fortunes from './components/Fortunes';
 import './App.css';
 
 const DEFAULT_CHARACTER = {
@@ -25,7 +26,8 @@ const DEFAULT_CHARACTER = {
   fortune: '',
   notes: '',
   dndBeyondLink: '',
-  deaths: 0
+  deaths: 0,
+  color: null
 };
 
 const DEFAULT_CHARACTERS = Array(8).fill(null).map(() => ({ ...DEFAULT_CHARACTER }));
@@ -40,6 +42,8 @@ export default function App() {
   const [weatherHistory, setWeatherHistory] = useLocalStorage('strahd-weather-history', []);
   const [activeTab, setActiveTab] = useLocalStorage('strahd-active-tab', 'dashboard');
   const [cardDraw, setCardDraw] = useLocalStorage('strahd-card-draw', null);
+  const [fortuneNotes, setFortuneNotes] = useLocalStorage('strahd-fortune-notes', {});
+  const [fortuneLocations, setFortuneLocations] = useLocalStorage('strahd-fortune-locations', {});
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
@@ -50,6 +54,18 @@ export default function App() {
   useEffect(() => {
     if (forecast[0] && weatherId !== forecast[0].weatherId) {
       setWeatherId(forecast[0].weatherId);
+    }
+  }, []); // Only run once on mount
+
+  // Migrate existing events to have an order field
+  useEffect(() => {
+    const needsMigration = events.some(e => e.order === undefined);
+    if (needsMigration) {
+      const migrated = events.map(e => ({
+        ...e,
+        order: e.order !== undefined ? e.order : parseInt(e.id) || 0
+      }));
+      setEvents(migrated);
     }
   }, []); // Only run once on mount
 
@@ -110,6 +126,17 @@ export default function App() {
     setForecast(updatedForecast);
   };
 
+  const handleForecastDayChange = (dayIndex, newWeatherId) => {
+    const updatedForecast = forecast.map((day, index) =>
+      index === dayIndex ? { ...day, weatherId: newWeatherId } : day
+    );
+    setForecast(updatedForecast);
+    // If changing day 0, also update current weather
+    if (dayIndex === 0) {
+      setWeatherId(newWeatherId);
+    }
+  };
+
   const handleCharacterChange = (index, character) => {
     const newCharacters = [...characters];
     newCharacters[index] = character;
@@ -145,7 +172,7 @@ export default function App() {
     if (editingEvent) {
       // Update existing event
       const updatedEvents = events.map(e =>
-        e.id === editingEvent.id ? { ...eventData, id: e.id } : e
+        e.id === editingEvent.id ? { ...eventData, id: e.id, order: e.order } : e
       );
       setEvents(updatedEvents);
     } else {
@@ -153,15 +180,55 @@ export default function App() {
       const newEvent = {
         ...eventData,
         id: Date.now().toString(),
+        order: Date.now(),
         weatherId: weatherId // Capture current weather
       };
       setEvents([...events, newEvent]);
     }
   };
 
+  const handleDeleteEvent = (eventId) => {
+    if (confirm('Delete this event?')) {
+      setEvents(events.filter(e => e.id !== eventId));
+    }
+  };
+
+  const handleReorderEvent = (eventId, direction) => {
+    const event = events.find(e => e.id === eventId);
+    if (!event) return;
+
+    const eventTotalDays = getTotalDays(event.date);
+    const dayEvents = events
+      .filter(e => getTotalDays(e.date) === eventTotalDays)
+      .sort((a, b) => (a.order ?? parseInt(a.id)) - (b.order ?? parseInt(b.id)));
+
+    const idx = dayEvents.findIndex(e => e.id === eventId);
+    const swapIdx = direction === 'up' ? idx - 1 : idx + 1;
+
+    if (swapIdx < 0 || swapIdx >= dayEvents.length) return;
+
+    const swapEvent = dayEvents[swapIdx];
+    const tempOrder = event.order ?? parseInt(event.id);
+    const swapOrder = swapEvent.order ?? parseInt(swapEvent.id);
+
+    setEvents(events.map(e => {
+      if (e.id === eventId) return { ...e, order: swapOrder };
+      if (e.id === swapEvent.id) return { ...e, order: tempOrder };
+      return e;
+    }));
+  };
+
   const handleCloseModal = () => {
     setIsEventModalOpen(false);
     setEditingEvent(null);
+  };
+
+  const handleFortuneNoteChange = (cardId, text) => {
+    setFortuneNotes(prev => ({ ...prev, [cardId]: text }));
+  };
+
+  const handleFortuneLocationChange = (cardId, text) => {
+    setFortuneLocations(prev => ({ ...prev, [cardId]: text }));
   };
 
   // Admin functions
@@ -177,7 +244,7 @@ export default function App() {
 
   const handleExportData = () => {
     const exportData = {
-      version: '2.1',
+      version: '2.2',
       exportDate: new Date().toISOString(),
       data: {
         date,
@@ -187,7 +254,9 @@ export default function App() {
         characters,
         events,
         weatherHistory,
-        cardDraw
+        cardDraw,
+        fortuneNotes,
+        fortuneLocations
       }
     };
 
@@ -215,6 +284,8 @@ export default function App() {
       if (data.events) setEvents(data.events);
       if (data.weatherHistory) setWeatherHistory(data.weatherHistory);
       if (data.cardDraw !== undefined) setCardDraw(data.cardDraw);
+      if (data.fortuneNotes) setFortuneNotes(data.fortuneNotes);
+      if (data.fortuneLocations) setFortuneLocations(data.fortuneLocations);
 
       alert('Data imported successfully!');
     } catch (error) {
@@ -268,6 +339,7 @@ export default function App() {
                 forecast={forecast}
                 onRegenerateForecast={handleRegenerateForecast}
                 currentDate={date}
+                onForecastDayChange={handleForecastDayChange}
               />
               <MoonPhase date={date} />
             </div>
@@ -285,7 +357,20 @@ export default function App() {
               currentWeatherId={weatherId}
               onEventClick={handleEditEvent}
               onAddEvent={handleAddEvent}
+              onDeleteEvent={handleDeleteEvent}
+              onReorderEvent={handleReorderEvent}
               weatherHistory={weatherHistory}
+            />
+          </section>
+        )}
+
+        {activeTab === 'fortunes' && (
+          <section className="fortunes-section">
+            <Fortunes
+              fortuneNotes={fortuneNotes}
+              onFortuneNoteChange={handleFortuneNoteChange}
+              fortuneLocations={fortuneLocations}
+              onFortuneLocationChange={handleFortuneLocationChange}
             />
           </section>
         )}
