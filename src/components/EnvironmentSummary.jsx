@@ -5,7 +5,7 @@ import { getWeatherById } from '../data/weather';
 import { getMoonPhase, getDaysUntilFullMoon } from './MoonPhase';
 import './EnvironmentSummary.css';
 
-export default function EnvironmentSummary({ date, weatherId, cardDraw }) {
+export default function EnvironmentSummary({ date, time, weatherId, cardDraw }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const dayOfWeek = getDayOfWeek(date);
@@ -33,6 +33,7 @@ export default function EnvironmentSummary({ date, weatherId, cardDraw }) {
             <span className="env-day-name">{dayOfWeek}</span>
             <span className="env-date-full">{date.day + 1} {month.name}, {date.year} BR</span>
             <span className="env-date-nickname">{month.nickname}</span>
+            {time && <span className="env-time">{time.hour} {time.ampm}</span>}
           </div>
         </div>
 

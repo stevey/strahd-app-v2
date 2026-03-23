@@ -154,6 +154,14 @@
   font-style: italic;
 }
 
+.env-time {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.12em;
+  margin-top: 0.1rem;
+}
+
 /* ---- Weather ---- */
 .env-weather-value {
   display: flex;

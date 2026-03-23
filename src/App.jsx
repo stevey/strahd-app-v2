@@ -34,6 +34,7 @@ const DEFAULT_CHARACTERS = Array(8).fill(null).map(() => ({ ...DEFAULT_CHARACTER
 
 export default function App() {
   const [date, setDate] = useLocalStorage('strahd-date', DEFAULT_DATE);
+  const [time, setTime] = useLocalStorage('strahd-time', { hour: 12, ampm: 'AM' });
   const [weatherId, setWeatherId] = useLocalStorage('strahd-weather', generateRandomWeather());
   const [forecast, setForecast] = useLocalStorage('strahd-forecast', generate7DayForecast());
   const [forecastDate, setForecastDate] = useLocalStorage('strahd-forecast-date', getTotalDays(DEFAULT_DATE));
@@ -235,6 +236,7 @@ export default function App() {
   const handleResetCalendarWeather = () => {
     const newForecast = generate7DayForecast();
     setDate(DEFAULT_DATE);
+    setTime({ hour: 12, ampm: 'AM' });
     setWeatherId(newForecast[0].weatherId); // Use forecast day 0 as current weather
     setForecast(newForecast);
     setForecastDate(getTotalDays(DEFAULT_DATE));
@@ -248,6 +250,7 @@ export default function App() {
       exportDate: new Date().toISOString(),
       data: {
         date,
+        time,
         weatherId,
         forecast,
         forecastDate,
@@ -277,6 +280,7 @@ export default function App() {
       const data = importedData.data || importedData;
 
       if (data.date) setDate(data.date);
+      if (data.time) setTime(data.time);
       if (data.weatherId) setWeatherId(data.weatherId);
       if (data.forecast) setForecast(data.forecast);
       if (data.forecastDate !== undefined) setForecastDate(data.forecastDate);
@@ -332,6 +336,8 @@ export default function App() {
                 date={date}
                 setDate={setDate}
                 onDateChange={handleDateChange}
+                time={time}
+                setTime={setTime}
               />
               <Weather
                 weatherId={weatherId}
@@ -413,7 +419,7 @@ export default function App() {
           onExportData={handleExportData}
           onImportData={handleImportData}
         />
-        <EnvironmentSummary date={date} weatherId={weatherId} cardDraw={cardDraw} />
+        <EnvironmentSummary date={date} time={time} weatherId={weatherId} cardDraw={cardDraw} />
       </footer>
 
       <EventModal

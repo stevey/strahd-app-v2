@@ -41,7 +41,12 @@ export default function DayEventsPanel({ selectedDay, selectedDate, events, onRe
                   {icon}
                 </div>
                 <div className="dep-event-info">
-                  <div className="dep-event-title">{event.title || 'Untitled Event'}</div>
+                  <div className="dep-event-title">
+                    {event.time && (
+                      <span className="dep-event-time">{event.time.hour} {event.time.ampm}</span>
+                    )}
+                    {event.title || 'Untitled Event'}
+                  </div>
                   {event.description && (
                     <div className="dep-event-desc">{event.description}</div>
                   )}

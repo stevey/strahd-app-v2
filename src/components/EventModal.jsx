@@ -11,9 +11,14 @@ export default function EventModal({ isOpen, onClose, onSave, event, currentDate
     date: currentDate
   });
 
+  const [eventHour, setEventHour] = useState('');
+  const [eventAmpm, setEventAmpm] = useState('AM');
+
   useEffect(() => {
     if (event) {
       setFormData(event);
+      setEventHour(event.time ? String(event.time.hour) : '');
+      setEventAmpm(event.time ? event.time.ampm : 'AM');
     } else {
       setFormData({
         title: '',
@@ -21,13 +26,16 @@ export default function EventModal({ isOpen, onClose, onSave, event, currentDate
         type: 'story',
         date: currentDate
       });
+      setEventHour('');
+      setEventAmpm('AM');
     }
   }, [event, currentDate, isOpen]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.title.trim()) {
-      onSave(formData);
+      const time = eventHour ? { hour: parseInt(eventHour, 10), ampm: eventAmpm } : null;
+      onSave({ ...formData, time });
       onClose();
     }
   };
@@ -123,6 +131,29 @@ export default function EventModal({ isOpen, onClose, onSave, event, currentDate
                 onChange={(e) => handleDateChange('year', e.target.value)}
                 placeholder="Year"
               />
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Time (optional)</label>
+            <div className="time-inputs">
+              <select
+                value={eventHour}
+                onChange={(e) => setEventHour(e.target.value)}
+              >
+                <option value="">— none —</option>
+                {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
+                  <option key={h} value={h}>{h}</option>
+                ))}
+              </select>
+              <select
+                value={eventAmpm}
+                onChange={(e) => setEventAmpm(e.target.value)}
+                disabled={!eventHour}
+              >
+                <option value="AM">AM</option>
+                <option value="PM">PM</option>
+              </select>
             </div>
           </div>
 

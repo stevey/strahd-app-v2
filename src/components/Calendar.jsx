@@ -1,7 +1,7 @@
 import { MONTHS, getDayOfWeek, advanceDate, DEFAULT_DATE, DAYS_PER_MONTH } from '../data/calendar';
 import './Calendar.css';
 
-export default function Calendar({ date, setDate, onDateChange }) {
+export default function Calendar({ date, setDate, onDateChange, time, setTime }) {
   const dayOfWeek = getDayOfWeek(date);
   const month = MONTHS[date.month];
 
@@ -33,8 +33,13 @@ export default function Calendar({ date, setDate, onDateChange }) {
           <span className="day-number">{date.day + 1}</span>
           <span className="month-name">{month.name}</span>
         </div>
-        <div className="month-nickname">{month.nickname}</div>
-        <div className="year">{date.year} BR</div>
+        <div className="date-meta">
+          <span className="month-nickname">{month.nickname}</span>
+          <span className="date-meta-sep">·</span>
+          <span className="year">{date.year} BR</span>
+          <span className="date-meta-sep">·</span>
+          <span className="time-display">{time.hour} {time.ampm}</span>
+        </div>
       </div>
 
       <div className="calendar-controls">
@@ -43,7 +48,7 @@ export default function Calendar({ date, setDate, onDateChange }) {
       </div>
 
       <div className="calendar-manual">
-        <h3>Set Date</h3>
+        <h3>Set Date &amp; Time</h3>
         <div className="manual-inputs">
           <label>
             Day
@@ -74,6 +79,29 @@ export default function Calendar({ date, setDate, onDateChange }) {
               value={date.year}
               onChange={(e) => handleManualChange('year', e.target.value)}
             />
+          </label>
+        </div>
+        <div className="time-inputs">
+          <label>
+            Hour
+            <select
+              value={time.hour}
+              onChange={(e) => setTime({ ...time, hour: parseInt(e.target.value, 10) })}
+            >
+              {Array.from({ length: 12 }, (_, i) => i + 1).map(h => (
+                <option key={h} value={h}>{h}</option>
+              ))}
+            </select>
+          </label>
+          <label>
+            AM/PM
+            <select
+              value={time.ampm}
+              onChange={(e) => setTime({ ...time, ampm: e.target.value })}
+            >
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
           </label>
         </div>
       </div>

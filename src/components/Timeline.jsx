@@ -182,6 +182,7 @@ export default function Timeline({ events, currentDate, currentWeatherId, onEven
           )}
           <div className="tooltip-date">
             {hoveredEvent.date.day + 1} {MONTHS[hoveredEvent.date.month].name}, {hoveredEvent.date.year} BR
+            {hoveredEvent.time && <span> · {hoveredEvent.time.hour} {hoveredEvent.time.ampm}</span>}
           </div>
         </div>
       )}

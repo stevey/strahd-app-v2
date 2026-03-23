@@ -99,6 +99,15 @@
   text-overflow: ellipsis;
 }
 
+.dep-event-time {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+  margin-right: var(--spacing-xs);
+  opacity: 0.8;
+}
+
 .dep-event-desc {
   font-size: 0.75rem;
   color: var(--text-muted);
