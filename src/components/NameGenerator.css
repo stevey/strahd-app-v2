@@ -1,4 +1,16 @@
-.name-generator {
+.npc-generator-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-md);
+}
+
+@media (max-width: 600px) {
+  .npc-generator-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.npc-column {
   background: var(--bg-panel);
   border: 1px solid var(--border-dark);
   border-radius: var(--radius-md);
@@ -17,6 +29,7 @@
   letter-spacing: 0.1em;
 }
 
+/* --- Generic NPC buttons --- */
 .name-buttons {
   display: flex;
   gap: var(--spacing-sm);
@@ -39,19 +52,22 @@
   box-shadow: 0 0 8px var(--accent-glow);
 }
 
-.gen-btn.male:hover {
+.gen-btn.male:hover,
+.gen-btn.male.active {
   border-color: #4a7c9b;
-  box-shadow: 0 0 8px rgba(74, 124, 155, 0.3);
+  box-shadow: 0 0 8px rgba(74, 124, 155, 0.4);
 }
 
-.gen-btn.female:hover {
+.gen-btn.female:hover,
+.gen-btn.female.active-female {
   border-color: #9b4a7c;
-  box-shadow: 0 0 8px rgba(155, 74, 124, 0.3);
+  box-shadow: 0 0 8px rgba(155, 74, 124, 0.4);
 }
 
+/* --- Result display --- */
 .name-result {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--spacing-sm);
   padding: var(--spacing-sm);
   background: var(--bg-dark);
@@ -60,13 +76,13 @@
 }
 
 .generated-name {
-  flex: 1;
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--text-accent);
 }
 
 .copy-btn {
+  flex-shrink: 0;
   padding: 4px 8px;
   font-size: 1rem;
   background: transparent;
@@ -82,6 +98,100 @@
   color: var(--text-primary);
 }
 
+/* --- Special NPC controls --- */
+.special-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.type-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.type-btn {
+  flex: 1;
+  padding: 6px 4px;
+  font-size: 0.78rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-dark);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.type-btn:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.type-btn.active {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+  color: var(--text-accent);
+}
+
+.generate-btn {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-dark);
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.generate-btn:hover:not(:disabled) {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.generate-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* --- Special NPC result --- */
+.special-result {
+  align-items: flex-start;
+}
+
+.special-result-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.npc-star {
+  color: #d4a82a;
+  margin-right: 4px;
+}
+
+.npc-type-badge {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.npc-class-line {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.npc-desc {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* --- History --- */
 .history-section {
   border-top: 1px solid var(--border-dark);
   padding-top: var(--spacing-sm);
@@ -110,9 +220,12 @@
 }
 
 .history-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding: 4px 0;
-  color: var(--text-secondary);
   border-bottom: 1px solid var(--border-dark);
+  color: var(--text-secondary);
 }
 
 .history-item:last-child {
@@ -125,4 +238,48 @@
 
 .history-item.female {
   color: #bd7aa3;
+}
+
+.history-item.adventurer {
+  color: #d4a82a;
+}
+
+.history-item-content {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.history-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  opacity: 0.8;
+}
+
+.history-delete {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+  opacity: 0.5;
+  transition: opacity 0.15s ease;
+}
+
+.history-delete:hover {
+  opacity: 1;
+  color: var(--text-secondary);
 }

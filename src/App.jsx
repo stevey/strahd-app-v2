@@ -45,6 +45,8 @@ export default function App() {
   const [cardDraw, setCardDraw] = useLocalStorage('strahd-card-draw', null);
   const [fortuneNotes, setFortuneNotes] = useLocalStorage('strahd-fortune-notes', {});
   const [fortuneLocations, setFortuneLocations] = useLocalStorage('strahd-fortune-locations', {});
+  const [genericNpcHistory, setGenericNpcHistory] = useLocalStorage('strahd-name-history', []);
+  const [specialNpcHistory, setSpecialNpcHistory] = useLocalStorage('strahd-special-npc-history', []);
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
@@ -259,7 +261,9 @@ export default function App() {
         weatherHistory,
         cardDraw,
         fortuneNotes,
-        fortuneLocations
+        fortuneLocations,
+        genericNpcHistory,
+        specialNpcHistory
       }
     };
 
@@ -290,6 +294,8 @@ export default function App() {
       if (data.cardDraw !== undefined) setCardDraw(data.cardDraw);
       if (data.fortuneNotes) setFortuneNotes(data.fortuneNotes);
       if (data.fortuneLocations) setFortuneLocations(data.fortuneLocations);
+      if (data.genericNpcHistory) setGenericNpcHistory(data.genericNpcHistory);
+      if (data.specialNpcHistory) setSpecialNpcHistory(data.specialNpcHistory);
 
       alert('Data imported successfully!');
     } catch (error) {
@@ -350,7 +356,12 @@ export default function App() {
               <MoonPhase date={date} />
             </div>
             <div className="dashboard-tools">
-              <NameGenerator />
+              <NameGenerator
+                genericHistory={genericNpcHistory}
+                setGenericHistory={setGenericNpcHistory}
+                specialHistory={specialNpcHistory}
+                setSpecialHistory={setSpecialNpcHistory}
+              />
             </div>
           </section>
         )}

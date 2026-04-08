@@ -15,7 +15,11 @@ The session-start dashboard. Everything the DM needs to set the scene at a glanc
 - **Current Weather** — Select or cycle through 19 Barovia-appropriate weather conditions, from *Gloomy* and *Heavy Fog* to *Blood Rain*, *Corpse Wind*, and *Unnatural Darkness*. Weighted random generation favours appropriately grim conditions.
 - **7-Day Forecast** — Persistent forecast that advances as the campaign date moves forward. Click any day card to change its weather. Scrolls horizontally so all 7 cards always display at equal width.
 - **Moon Phase** — Live moon phase calculated from the current Barovian date.
-- **Barovian Name Generator** — Instant NPC names with a single click.
+- **NPC Generator** — Two-column generator for instant NPC creation:
+  - **Generic NPCs** — Click Male or Female for a randomised Barovian name and a distinctive physical feature.
+  - **Special NPCs** — Choose a type (Werewolf, Wereraven, Vampire Spawn) and gender, then generate a named NPC with a themed appearance trait. Roughly 1-in-4 are marked ★ as former adventurers, complete with a D&D 5.5e race and class. Vampire spawn draw from a mix of Barovian and common fantasy names; starred vampire spawn use non-Barovian names only.
+  - All features are appearance-based — usable the moment the NPC walks in the door.
+  - Full history for both columns (up to 20 entries each) with per-item delete. Click any history entry to restore its full details. Histories are included in backup exports and imports.
 
 ### 📅 Timeline Tab
 A scrollable horizontal campaign timeline showing 3 weeks at a time.
@@ -45,7 +49,7 @@ Slots for up to 8 (expandable) player characters.
 - Retire a character to remove their slot.
 
 ### 💾 Backup & Restore
-- **Export** — downloads a complete JSON snapshot of all campaign data (date, weather, forecast, events, characters, fortunes, card draw).
+- **Export** — downloads a complete JSON snapshot of all campaign data (date, weather, forecast, events, characters, fortunes, card draw, NPC histories).
 - **Import** — restores from any v2.1 or v2.2 backup file. Fully backwards-compatible.
 - Current export version: `2.2`
 
@@ -97,7 +101,7 @@ src/
 │   ├── Weather             # Current weather + forecast
 │   ├── WeatherForecast     # 7-day forecast grid
 │   ├── MoonPhase           # Moon phase display
-│   ├── NameGenerator       # Barovian NPC name generator
+│   ├── NameGenerator       # NPC generator (generic + special: werewolf/wereraven/vampire spawn)
 │   ├── Timeline            # Horizontal timeline track
 │   ├── DayEventsPanel      # Selected-day event list
 │   ├── EventModal          # Add / edit event form
@@ -111,7 +115,7 @@ src/
 │   ├── calendar.js         # Forgotten Realms calendar constants
 │   ├── weather.js          # Weather types + generation logic
 │   ├── eventTypes.js       # Timeline event type definitions
-│   └── barovianNames.js    # NPC name lists
+│   └── barovianNames.js    # NPC name lists + special NPC generation logic
 ├── hooks/
 │   └── useLocalStorage.js  # Persistent state hook
 └── App.jsx                 # Root component + all state
