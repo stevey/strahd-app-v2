@@ -148,6 +148,34 @@ const dndCommonFamilyNames = [
   'Ivywood', 'Larkmoor', 'Pallwick', 'Stormhaven'
 ];
 
+const witchFemaleNames = [
+  'Morag', 'Griselda', 'Morwenna', 'Belladonna', 'Morrigan', 'Agatha',
+  'Circe', 'Lilith', 'Viviane', 'Ursula', 'Endora', 'Ravenna',
+  'Elspeth', 'Isolde', 'Morgana', 'Mara', 'Hester', 'Agnes',
+  'Selene', 'Seraphina', 'Winifred', 'Rowena', 'Zelda', 'Vesper',
+  'Beatrix', 'Ingrid', 'Nyx', 'Gothel', 'Elara', 'Sybilla'
+];
+
+const witchMaleNames = [
+  'Malachai', 'Corvus', 'Balthazar', 'Aldric', 'Mordred', 'Crispin',
+  'Ambrose', 'Silas', 'Caius', 'Grimwald', 'Dorian', 'Magnus',
+  'Alaric', 'Damien', 'Aldous', 'Inigo', 'Calder', 'Ulric',
+  'Evander', 'Draven'
+];
+
+const witchFamilyNames = [
+  'Blackwood', 'Nightshade', 'Ashcroft', 'Ravenwood', 'Thornwood',
+  'Grimshaw', 'Blackthorn', 'Mournfield', 'Wychwood', 'Bleakwood',
+  'Shadowmere', 'Darkhollow', 'Witherby', 'Gallowmere', 'Stonecrow',
+  'Darkmore', 'Moorcroft', 'Hagthorn', 'Hollowmere', 'Greymantle'
+];
+
+function generateWitchName(gender) {
+  const firstName = gender === 'male' ? randomFrom(witchMaleNames) : randomFrom(witchFemaleNames);
+  const familyName = randomFrom(witchFamilyNames);
+  return { firstName, familyName, fullName: `${firstName} ${familyName}`, gender };
+}
+
 function generateCommonName(gender) {
   const firstName = gender === 'male' ? randomFrom(dndCommonMaleNames) : randomFrom(dndCommonFemaleNames);
   const familyName = randomFrom(dndCommonFamilyNames);
@@ -211,6 +239,31 @@ export const wereravenFeatures = [
   'a warm, expressive face with an open, easy smile'
 ];
 
+export const witchFeatures = [
+  'fingers stained permanently dark from years of handling roots and rare herbs',
+  'a smell of smoke, sulphur, and something sweetly rotten that clings to the clothes',
+  'eyes that seem to shift between two colours depending on the angle of the light',
+  'gnarled, knotted hands with unusually long, curved nails',
+  'hair that moves faintly even in perfectly still air',
+  'a long nose with a pronounced, hook-like downward curve',
+  'teeth stained dark from decades of foul brews',
+  'a laugh that begins a half-second before it should',
+  'a shadow that flickers and shifts subtly out of sync with the light',
+  'thin, cracked lips curled into a permanent half-smile',
+  'a raised mole or wart in a conspicuous place on the face',
+  'a voice too smooth and deliberate, as though every word is chosen with care',
+  'skin with a faint greenish-grey cast in certain light',
+  'a milky cataract over one eye that nonetheless seems to track you precisely',
+  'a tangle of braided charms, small bones, and dried herbs worked into the hair',
+  'nails blued and thickened like horn, tapping a slow, irregular rhythm',
+  'a hunched posture that straightens with unsettling speed when threatened',
+  'dried herbs and small bones woven through the clothing like dark jewellery',
+  'a faint smell of burnt hair that intensifies when displeased',
+  'deep-set eyes that catch a cold light even in shadow',
+  'a low, melodic hum that falls just slightly off any recognizable tune',
+  'small, sharp teeth visible even when the mouth is barely open'
+];
+
 export const vampireSpawnFeatures = [
   'hollow cheeks and sunken eyes with permanent dark circles',
   'skin cold to the touch and faintly waxy, like old tallow',
@@ -247,21 +300,23 @@ export const dnd5eRaces = [
   'Gnome', 'Half-Elf', 'Half-Orc', 'Tiefling'
 ];
 
-export const specialNpcTypes = ['werewolf', 'wereraven', 'vampire spawn'];
+export const specialNpcTypes = ['werewolf', 'wereraven', 'vampire spawn', 'witch'];
 
 const featurePoolByType = {
   'werewolf': werewolfFeatures,
   'wereraven': wereravenFeatures,
   'vampire spawn': vampireSpawnFeatures,
+  'witch': witchFeatures,
 };
 
 export function generateSpecialNpc(gender = 'male', npcType = 'werewolf', recentFeatures = []) {
-  const isFormerAdventurer = Math.random() < 0.25;
+  const isFormerAdventurer = npcType === 'witch' ? false : Math.random() < 0.25;
 
-  // Name source depends on type and adventurer status
   const name = npcType === 'vampire spawn'
     ? generateVampireSpawnName(gender, isFormerAdventurer)
-    : generateName(gender);
+    : npcType === 'witch'
+      ? generateWitchName(gender)
+      : generateName(gender);
 
   const pool = featurePoolByType[npcType];
   const available = pool.filter(f => !recentFeatures.includes(f));

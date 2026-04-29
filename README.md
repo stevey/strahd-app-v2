@@ -17,7 +17,7 @@ The session-start dashboard. Everything the DM needs to set the scene at a glanc
 - **Moon Phase** — Live moon phase calculated from the current Barovian date.
 - **NPC Generator** — Two-column generator for instant NPC creation:
   - **Generic NPCs** — Click Male or Female for a randomised Barovian name and a distinctive physical feature.
-  - **Special NPCs** — Choose a type (Werewolf, Wereraven, Vampire Spawn) and gender, then generate a named NPC with a themed appearance trait. Roughly 1-in-4 are marked ★ as former adventurers, complete with a D&D 5.5e race and class. Vampire spawn draw from a mix of Barovian and common fantasy names; starred vampire spawn use non-Barovian names only.
+  - **Special NPCs** — Choose a type (Werewolf, Wereraven, Vampire Spawn, Witch) and gender, then generate a named NPC with a themed appearance trait. Roughly 1-in-4 are marked ★ as former adventurers, complete with a D&D 5.5e race and class. Vampire spawn draw from a mix of Barovian and common fantasy names; starred vampire spawn use non-Barovian names only. Witches are never former adventurers and always draw from a dedicated pool of evocative witch names.
   - All features are appearance-based — usable the moment the NPC walks in the door.
   - Full history for both columns (up to 20 entries each) with per-item delete. Click any history entry to restore its full details. Histories are included in backup exports and imports.
 
@@ -101,7 +101,7 @@ src/
 │   ├── Weather             # Current weather + forecast
 │   ├── WeatherForecast     # 7-day forecast grid
 │   ├── MoonPhase           # Moon phase display
-│   ├── NameGenerator       # NPC generator (generic + special: werewolf/wereraven/vampire spawn)
+│   ├── NameGenerator       # NPC generator (generic + special: werewolf/wereraven/vampire spawn/witch)
 │   ├── Timeline            # Horizontal timeline track
 │   ├── DayEventsPanel      # Selected-day event list
 │   ├── EventModal          # Add / edit event form
