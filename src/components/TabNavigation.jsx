@@ -4,6 +4,7 @@ const TABS = [
   { id: 'dashboard', label: 'Environment' },
   { id: 'timeline', label: 'Timeline' },
   { id: 'fortunes', label: 'Fortunes' },
+  { id: 'darkgifts', label: 'Dark Gifts' },
   { id: 'characters', label: 'Characters' }
 ];
 

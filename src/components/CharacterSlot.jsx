@@ -67,6 +67,7 @@ export default function CharacterSlot({ character, onChange, onShowDetails }) {
 
   const hasContent = character.name || character.portrait ||
                      character.conditions || character.darkGifts ||
+                     (character.darkGiftIds || []).length > 0 ||
                      character.fortune || character.notes || character.fears ||
                      character.dndBeyondLink || deaths > 0;
 

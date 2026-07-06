@@ -165,6 +165,136 @@
   box-shadow: 0 0 5px var(--accent-glow);
 }
 
+/* Dark Gifts */
+.panel-gifts-none {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.panel-gift {
+  background: var(--bg-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.panel-gift[open] {
+  border-color: var(--border-accent);
+}
+
+.panel-gift-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 6px var(--spacing-sm);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.panel-gift-summary::-webkit-details-marker {
+  display: none;
+}
+
+.panel-gift-summary:hover {
+  background: var(--bg-panel-hover);
+}
+
+.panel-gift-number {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, var(--accent-secondary) 0%, #2a0000 100%);
+  border: 1px solid var(--accent-light);
+  border-radius: 50%;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-accent);
+}
+
+.panel-gift-title {
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  letter-spacing: 0.03em;
+}
+
+.panel-gift-remove {
+  flex-shrink: 0;
+  padding: 0 4px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.5;
+  transition: all 0.15s ease;
+}
+
+.panel-gift-remove:hover {
+  opacity: 1;
+  color: var(--accent-light);
+  background: transparent;
+  box-shadow: none;
+}
+
+.panel-gift-description {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  padding: 0 var(--spacing-sm) var(--spacing-sm) var(--spacing-sm);
+}
+
+.panel-gift-select {
+  font-size: 0.78rem;
+  padding: 5px 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.panel-gift-legacy {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border: 1px dashed var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+.panel-gift-legacy-text {
+  flex: 1;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  white-space: pre-wrap;
+}
+
+.panel-gift-legacy-clear {
+  padding: 2px 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+}
+
+.panel-gift-legacy-clear:hover {
+  opacity: 1;
+  background: transparent;
+  box-shadow: none;
+}
+
 /* D&D Beyond Link */
 .panel-link-display {
   display: flex;

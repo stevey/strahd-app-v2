@@ -15,6 +15,8 @@ import AdminControls from './components/AdminControls';
 import CardDraw from './components/CardDraw';
 import EnvironmentSummary from './components/EnvironmentSummary';
 import Fortunes from './components/Fortunes';
+import DarkGifts from './components/DarkGifts';
+import { DEFAULT_DARK_GIFTS } from './data/darkGifts';
 import './App.css';
 
 const DEFAULT_CHARACTER = {
@@ -23,6 +25,7 @@ const DEFAULT_CHARACTER = {
   conditions: '',
   fears: '',
   darkGifts: '',
+  darkGiftIds: [],
   fortune: '',
   notes: '',
   dndBeyondLink: '',
@@ -47,6 +50,7 @@ export default function App() {
   const [fortuneLocations, setFortuneLocations] = useLocalStorage('strahd-fortune-locations', {});
   const [genericNpcHistory, setGenericNpcHistory] = useLocalStorage('strahd-name-history', []);
   const [specialNpcHistory, setSpecialNpcHistory] = useLocalStorage('strahd-special-npc-history', []);
+  const [darkGifts, setDarkGifts] = useLocalStorage('strahd-dark-gifts', DEFAULT_DARK_GIFTS);
 
   const [isEventModalOpen, setIsEventModalOpen] = useState(false);
   const [editingEvent, setEditingEvent] = useState(null);
@@ -69,6 +73,15 @@ export default function App() {
         order: e.order !== undefined ? e.order : parseInt(e.id) || 0
       }));
       setEvents(migrated);
+    }
+  }, []); // Only run once on mount
+
+  // Migrate existing characters to have a darkGiftIds array
+  useEffect(() => {
+    if (characters.some(c => !Array.isArray(c.darkGiftIds))) {
+      setCharacters(characters.map(c =>
+        Array.isArray(c.darkGiftIds) ? c : { ...c, darkGiftIds: [] }
+      ));
     }
   }, []); // Only run once on mount
 
@@ -234,6 +247,43 @@ export default function App() {
     setFortuneLocations(prev => ({ ...prev, [cardId]: text }));
   };
 
+  // Dark Gifts
+  const handleSaveDarkGift = (gift) => {
+    if (gift.id) {
+      setDarkGifts(darkGifts.map(g => (g.id === gift.id ? gift : g)));
+    } else {
+      setDarkGifts([...darkGifts, { ...gift, id: `custom-${Date.now()}` }]);
+    }
+  };
+
+  const handleDeleteDarkGift = (giftId) => {
+    setDarkGifts(darkGifts.filter(g => g.id !== giftId));
+    // Strip the deleted gift from any character who has it
+    setCharacters(characters.map(c =>
+      (c.darkGiftIds || []).includes(giftId)
+        ? { ...c, darkGiftIds: c.darkGiftIds.filter(id => id !== giftId) }
+        : c
+    ));
+  };
+
+  const handleAssignDarkGift = (characterIndex, giftId) => {
+    setCharacters(characters.map((c, i) => {
+      if (i !== characterIndex) return c;
+      const ids = c.darkGiftIds || [];
+      // A character can never hold the same dark gift twice
+      if (ids.includes(giftId)) return c;
+      return { ...c, darkGiftIds: [...ids, giftId] };
+    }));
+  };
+
+  const handleUnassignDarkGift = (characterIndex, giftId) => {
+    setCharacters(characters.map((c, i) =>
+      i === characterIndex
+        ? { ...c, darkGiftIds: (c.darkGiftIds || []).filter(id => id !== giftId) }
+        : c
+    ));
+  };
+
   // Admin functions
   const handleResetCalendarWeather = () => {
     const newForecast = generate7DayForecast();
@@ -248,7 +298,7 @@ export default function App() {
 
   const handleExportData = () => {
     const exportData = {
-      version: '2.2',
+      version: '2.3',
       exportDate: new Date().toISOString(),
       data: {
         date,
@@ -263,7 +313,8 @@ export default function App() {
         fortuneNotes,
         fortuneLocations,
         genericNpcHistory,
-        specialNpcHistory
+        specialNpcHistory,
+        darkGifts
       }
     };
 
@@ -296,6 +347,7 @@ export default function App() {
       if (data.fortuneLocations) setFortuneLocations(data.fortuneLocations);
       if (data.genericNpcHistory) setGenericNpcHistory(data.genericNpcHistory);
       if (data.specialNpcHistory) setSpecialNpcHistory(data.specialNpcHistory);
+      if (data.darkGifts) setDarkGifts(data.darkGifts);
 
       alert('Data imported successfully!');
     } catch (error) {
@@ -392,6 +444,19 @@ export default function App() {
           </section>
         )}
 
+        {activeTab === 'darkgifts' && (
+          <section className="darkgifts-section">
+            <DarkGifts
+              gifts={darkGifts}
+              characters={characters}
+              onSaveGift={handleSaveDarkGift}
+              onDeleteGift={handleDeleteDarkGift}
+              onAssign={handleAssignDarkGift}
+              onUnassign={handleUnassignDarkGift}
+            />
+          </section>
+        )}
+
         {activeTab === 'characters' && (
           <section className="characters-section">
             <div className="characters-grid">
@@ -413,6 +478,7 @@ export default function App() {
         {selectedCharacterIndex !== null && characters[selectedCharacterIndex] && (
           <CharacterDetailsPanel
             character={characters[selectedCharacterIndex]}
+            darkGifts={darkGifts}
             onChange={(c) => handleCharacterChange(selectedCharacterIndex, c)}
             onClose={() => setSelectedCharacterIndex(null)}
             onRetire={() => {

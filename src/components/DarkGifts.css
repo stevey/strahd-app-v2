@@ -1,0 +1,406 @@
+.darkgifts-container {
+  padding-bottom: var(--spacing-xl);
+}
+
+/* Header */
+.darkgifts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-lg);
+}
+
+.darkgifts-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0 0 4px 0;
+}
+
+.darkgifts-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  font-style: italic;
+}
+
+.darkgifts-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.darkgifts-search {
+  width: 200px;
+  font-size: 0.85rem;
+  padding: 6px 10px;
+}
+
+.darkgifts-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.darkgifts-add-btn {
+  font-size: 0.8rem;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  white-space: nowrap;
+}
+
+.darkgifts-empty {
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+/* Section blocks */
+.darkgifts-section-block {
+  margin-bottom: var(--spacing-xl);
+}
+
+.darkgifts-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border-accent);
+  padding-bottom: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.darkgifts-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.darkgifts-section-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* Masonry-style columns — cards flow down, variable heights pack tightly */
+.gift-grid {
+  columns: 360px;
+  column-gap: var(--spacing-md);
+}
+
+/* Gift card */
+.gift-card {
+  break-inside: avoid;
+  margin-bottom: var(--spacing-md);
+  background: linear-gradient(145deg, var(--bg-panel) 0%, #151515 100%);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gift-card:hover {
+  border-color: var(--accent-primary);
+  box-shadow: 0 4px 20px rgba(139, 0, 0, 0.2);
+}
+
+.gift-card-assigned {
+  border-color: var(--border-accent);
+  background: linear-gradient(145deg, #1d1416 0%, #151013 100%);
+}
+
+.gift-card-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.gift-number {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, var(--accent-secondary) 0%, #2a0000 100%);
+  border: 1px solid var(--accent-light);
+  border-radius: 50%;
+  font-family: var(--font-heading);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-accent);
+}
+
+.gift-title {
+  flex: 1;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  color: var(--text-accent);
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.gift-edit-btn {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gift-edit-btn:hover {
+  opacity: 1;
+  border-color: var(--accent-primary);
+  color: var(--text-accent);
+  background: rgba(139, 0, 0, 0.15);
+  box-shadow: none;
+}
+
+.gift-description {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Card footer — chips + assign */
+.gift-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  border-top: 1px solid var(--border-dark);
+  padding-top: var(--spacing-sm);
+  margin-top: auto;
+}
+
+.gift-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.gift-unclaimed {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.gift-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 6px 2px 3px;
+  background: var(--bg-dark);
+  border: 1px solid var(--border-dark);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: var(--text-primary);
+}
+
+.gift-chip-portrait {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.gift-chip-dot {
+  width: 10px;
+  height: 10px;
+  margin-left: 3px;
+  border-radius: 50%;
+  background: var(--border-dark);
+}
+
+.gift-chip-name {
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gift-chip-remove {
+  padding: 0 2px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  cursor: pointer;
+  line-height: 1;
+  opacity: 0.6;
+  transition: all 0.15s ease;
+}
+
+.gift-chip-remove:hover {
+  opacity: 1;
+  color: var(--accent-light);
+  background: transparent;
+  box-shadow: none;
+}
+
+.gift-assign-select {
+  font-size: 0.78rem;
+  padding: 4px 8px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+/* Modal */
+.gift-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+}
+
+.gift-modal {
+  width: 520px;
+  max-width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: linear-gradient(145deg, var(--bg-panel) 0%, #151515 100%);
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-md);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.7);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.gift-modal-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--border-accent);
+}
+
+.gift-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.gift-modal-row {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
+.gift-modal-field-number {
+  flex: 0 0 110px;
+}
+
+.gift-modal-label {
+  font-size: 0.7rem;
+  color: var(--text-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: var(--font-heading);
+  font-weight: 600;
+}
+
+.gift-modal textarea {
+  resize: vertical;
+  min-height: 120px;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.gift-modal-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding-top: var(--spacing-sm);
+  border-top: 1px solid var(--border-dark);
+}
+
+.gift-modal-actions-right {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-left: auto;
+}
+
+.gift-modal-delete {
+  background: transparent;
+  border: 1px solid var(--border-dark);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 6px 12px;
+  opacity: 0.7;
+}
+
+.gift-modal-delete:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-light);
+  background: rgba(139, 0, 0, 0.1);
+  opacity: 1;
+  box-shadow: none;
+}
+
+.gift-modal-cancel {
+  background: transparent;
+  border: 1px solid var(--border-dark);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  padding: 6px 14px;
+}
+
+.gift-modal-cancel:hover {
+  border-color: var(--text-muted);
+  background: var(--bg-panel-hover);
+  box-shadow: none;
+}
+
+.gift-modal-save {
+  font-size: 0.85rem;
+  padding: 6px 18px;
+}
+
+.gift-modal-save:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}

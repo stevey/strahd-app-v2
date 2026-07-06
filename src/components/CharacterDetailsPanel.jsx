@@ -1,7 +1,8 @@
 import { useRef, useEffect } from 'react';
+import { GIFT_LISTS } from '../data/darkGifts';
 import './CharacterDetailsPanel.css';
 
-export default function CharacterDetailsPanel({ character, onChange, onClose, onRetire }) {
+export default function CharacterDetailsPanel({ character, darkGifts = [], onChange, onClose, onRetire }) {
   const textareaRefs = useRef({});
 
   // Auto-resize textareas
@@ -25,6 +26,28 @@ export default function CharacterDetailsPanel({ character, onChange, onClose, on
   if (!character) return null;
 
   const deaths = character.deaths || 0;
+
+  const giftIds = character.darkGiftIds || [];
+  const assignedGifts = giftIds
+    .map(id => darkGifts.find(g => g.id === id))
+    .filter(Boolean);
+  const availableGifts = darkGifts.filter(g => !giftIds.includes(g.id));
+
+  const handleAddGift = (e) => {
+    const giftId = e.target.value;
+    // A character can never hold the same dark gift twice
+    if (giftId && !giftIds.includes(giftId)) {
+      onChange({ ...character, darkGiftIds: [...giftIds, giftId] });
+    }
+    e.target.value = '';
+  };
+
+  const handleRemoveGift = (gift) => {
+    const name = character.name || 'this character';
+    if (confirm(`Remove "${gift.title}" from ${name}?`)) {
+      onChange({ ...character, darkGiftIds: giftIds.filter(id => id !== gift.id) });
+    }
+  };
 
   const handleRetire = () => {
     const name = character.name || 'this character';
@@ -120,14 +143,63 @@ export default function CharacterDetailsPanel({ character, onChange, onClose, on
 
           <div className="panel-section">
             <label className="panel-label">Dark Gifts</label>
-            <textarea
-              ref={el => textareaRefs.current.darkGifts = el}
-              placeholder="Dark powers bestowed by the Dark Powers..."
-              value={character.darkGifts || ''}
-              onChange={(e) => handleTextareaChange('darkGifts', e)}
-              rows={2}
-              className="panel-textarea auto-resize"
-            />
+            {assignedGifts.length === 0 && (
+              <span className="panel-gifts-none">No dark gifts... yet.</span>
+            )}
+            {assignedGifts.map(gift => (
+              <details key={gift.id} className="panel-gift">
+                <summary className="panel-gift-summary">
+                  <span className="panel-gift-number">{gift.number ?? '✦'}</span>
+                  <span className="panel-gift-title">{gift.title}</span>
+                  <button
+                    className="panel-gift-remove"
+                    title="Remove this dark gift"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleRemoveGift(gift);
+                    }}
+                  >
+                    ✕
+                  </button>
+                </summary>
+                <p className="panel-gift-description">{gift.description}</p>
+              </details>
+            ))}
+            {availableGifts.length > 0 && (
+              <select className="panel-gift-select" value="" onChange={handleAddGift}>
+                <option value="">+ Bestow a dark gift…</option>
+                {Object.keys(GIFT_LISTS)
+                  .filter(listKey => availableGifts.some(g => g.list === listKey))
+                  .map(listKey => (
+                    <optgroup key={listKey} label={GIFT_LISTS[listKey].title}>
+                      {availableGifts
+                        .filter(g => g.list === listKey)
+                        .map(gift => (
+                          <option key={gift.id} value={gift.id}>
+                            {gift.number ? `${gift.number}. ` : ''}{gift.title}
+                          </option>
+                        ))}
+                    </optgroup>
+                  ))}
+              </select>
+            )}
+            {character.darkGifts && (
+              <div className="panel-gift-legacy">
+                <span className="panel-gift-legacy-text">{character.darkGifts}</span>
+                <button
+                  className="panel-gift-legacy-clear"
+                  title="Clear old free-text dark gift notes"
+                  onClick={() => {
+                    if (confirm('Clear these old dark gift notes?')) {
+                      onChange({ ...character, darkGifts: '' });
+                    }
+                  }}
+                >
+                  clear
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="panel-section">
