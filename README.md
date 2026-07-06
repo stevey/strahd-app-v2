@@ -1,6 +1,6 @@
 # 🧛 Curse of Strahd — DM Tracker
 
-A purpose-built Dungeon Master companion app for running **Curse of Strahd** campaigns. Tracks the Barovian calendar, weather, moon phases, timeline events, player characters, and Tarokka fortune readings — all in a single dark-themed, no-login, no-server web app.
+A purpose-built Dungeon Master companion app for running **Curse of Strahd** campaigns. Tracks the Barovian calendar, weather, moon phases, timeline events, player characters, Dark Gifts, and Tarokka fortune readings — all in a single dark-themed, no-login, no-server web app.
 
 > Built for the table. Everything persists in your browser. Nothing leaves your machine.
 
@@ -11,7 +11,7 @@ A purpose-built Dungeon Master companion app for running **Curse of Strahd** cam
 ### 🌦️ Environment Tab
 The session-start dashboard. Everything the DM needs to set the scene at a glance.
 
-- **Barovian Calendar** — Full Forgotten Realms calendar (12 months × 30 days, year in Barovian Reckoning). Advance the date one day at a time or jump ahead — the forecast and weather history update automatically.
+- **Barovian Calendar & Time** — Full Forgotten Realms calendar (12 months × 30 days, year in Barovian Reckoning). Advance the date one day at a time or jump ahead — the forecast and weather history update automatically. Also tracks the in-game **time of day** (hour + AM/PM), shown alongside the date and in the footer environment recap.
 - **Current Weather** — Select or cycle through 19 Barovia-appropriate weather conditions, from *Gloomy* and *Heavy Fog* to *Blood Rain*, *Corpse Wind*, and *Unnatural Darkness*. Weighted random generation favours appropriately grim conditions.
 - **7-Day Forecast** — Persistent forecast that advances as the campaign date moves forward. Click any day card to change its weather. Scrolls horizontally so all 7 cards always display at equal width.
 - **Moon Phase** — Live moon phase calculated from the current Barovian date.
@@ -27,7 +27,7 @@ A scrollable horizontal campaign timeline showing 3 weeks at a time.
 - Navigate backwards and forwards by week, or jump to today.
 - Each day shows its weather icon and any events logged on that day.
 - **Click any day** to open the Day Events Panel below the track — a full list of that day's events with type badges, descriptions, weather context, and reorder controls (▲▼).
-- Add, edit, and delete events. Events are typed (Combat, Story, NPC, Location, Quest, Other) with colour-coded icons.
+- Add, edit, and delete events. Events are typed (Combat, Story, NPC, Location, Quest, Other) with colour-coded icons, and can carry an **optional time of day** shown in the day panel.
 - The "Add Event" button pre-fills to the selected day's date.
 
 ### 🔮 Fortunes Tab
@@ -38,20 +38,29 @@ Tracks Madam Eva's Tarokka reading for the campaign.
 - **DM Notes** — a free-text field per card for session notes.
 - **🔒 Secret Location** — a hidden field that is blurred by default and only revealed on hover. Keeps the actual location off-screen when players might be watching.
 
+### 🦇 Dark Gifts Tab
+A full compendium of the banes and boons the Dark Powers bestow on characters who die in Barovia.
+
+- **Two seeded rule sets** — the *Expanded Dark Gifts* table (DDAL04 Adventurers League) and the *Darker Gifts* supplement, each gift shown as a card with its d20 roll number, a short evocative title, and the complete rules text.
+- **Assign to characters** — every card has an assign dropdown listing the current party. Assigned characters appear as chips (portrait or colour dot + name) with one-click removal. A gift can be held by any number of characters, but **a character can never receive the same gift twice** — the UI enforces it.
+- **Search & filter** — free-text search across titles, rules text, and roll numbers, plus a "Bestowed only" toggle to see just the gifts currently in play.
+- **Fully editable** — add homebrew gifts (with optional d20 number and list placement), edit any gift's text, or delete a gift entirely (deleting also removes it from every character holding it).
+
 ### 🧙 Characters Tab
 Slots for up to 8 (expandable) player characters.
 
 - Portrait upload with drag-and-drop support. Images are resized and stored locally.
 - **Colour ring** — assign a player colour to each character; their portrait gets a glowing coloured ring for quick identification.
-- **Details panel** — slide-in panel per character with fields for Conditions, Fears, Dark Gifts, Fortune (Tarokka reading), and general Notes.
+- **Details panel** — slide-in panel per character with fields for Conditions, Fears, Fortune (Tarokka reading), and general Notes.
+- **Dark Gifts cross-reference** — the details panel lists the character's bestowed dark gifts as collapsible entries (click to expand the full rules text), with a dropdown to bestow new ones and one-click removal. Stays in sync with the Dark Gifts tab.
 - Death counter (💀) per character.
 - D&D Beyond character sheet link.
 - Retire a character to remove their slot.
 
 ### 💾 Backup & Restore
-- **Export** — downloads a complete JSON snapshot of all campaign data (date, weather, forecast, events, characters, fortunes, card draw, NPC histories).
-- **Import** — restores from any v2.1 or v2.2 backup file. Fully backwards-compatible.
-- Current export version: `2.2`
+- **Export** — downloads a complete JSON snapshot of all campaign data (date, time, weather, forecast, events, characters, fortunes, card draw, NPC histories, dark gifts).
+- **Import** — restores from any v2.1, v2.2, or v2.3 backup file. Fully backwards-compatible.
+- Current export version: `2.3`
 
 ---
 
@@ -106,6 +115,7 @@ src/
 │   ├── DayEventsPanel      # Selected-day event list
 │   ├── EventModal          # Add / edit event form
 │   ├── Fortunes            # Tarokka reading cards
+│   ├── DarkGifts           # Dark gifts compendium + character assignment
 │   ├── CharacterSlot       # Character portrait + quick info
 │   ├── CharacterDetailsPanel  # Full character details panel
 │   ├── CardDraw            # Card draw tracker (header)
@@ -115,7 +125,8 @@ src/
 │   ├── calendar.js         # Forgotten Realms calendar constants
 │   ├── weather.js          # Weather types + generation logic
 │   ├── eventTypes.js       # Timeline event type definitions
-│   └── barovianNames.js    # NPC name lists + special NPC generation logic
+│   ├── barovianNames.js    # NPC name lists + special NPC generation logic
+│   └── darkGifts.js        # Seeded dark gift lists (DDAL04 + Darker Gifts)
 ├── hooks/
 │   └── useLocalStorage.js  # Persistent state hook
 └── App.jsx                 # Root component + all state
