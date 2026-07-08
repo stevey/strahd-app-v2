@@ -93,6 +93,13 @@
   margin: 0;
 }
 
+.panel-retired-tag {
+  margin-left: 8px;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
 /* Content */
 .panel-content {
   padding: var(--spacing-md);

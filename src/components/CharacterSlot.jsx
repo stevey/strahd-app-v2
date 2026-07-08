@@ -72,7 +72,7 @@ export default function CharacterSlot({ character, onChange, onShowDetails }) {
                      character.dndBeyondLink || deaths > 0;
 
   return (
-    <div className={`character-slot ${hasContent ? 'has-content' : ''}`}>
+    <div className={`character-slot ${hasContent ? 'has-content' : ''} ${character.retired ? 'retired' : ''}`}>
       <div className="slot-header">
         <div
           className={`portrait-container ${isDragging ? 'dragging' : ''} ${isUploading ? 'uploading' : ''}`}
@@ -137,6 +137,14 @@ export default function CharacterSlot({ character, onChange, onShowDetails }) {
         <button className="details-btn" onClick={onShowDetails}>
           details
         </button>
+        {character.retired && (
+          <button
+            className="unretire-btn"
+            onClick={() => onChange({ ...character, retired: false })}
+          >
+            un-retire
+          </button>
+        )}
         {character.dndBeyondLink ? (
           <a
             href={character.dndBeyondLink}

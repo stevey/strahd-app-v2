@@ -228,6 +228,17 @@
   color: var(--text-primary);
 }
 
+.gift-chip.gift-chip-retired {
+  opacity: 0.55;
+  filter: grayscale(0.7);
+}
+
+.gift-chip-retired-tag {
+  font-size: 0.68rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
 .gift-chip-portrait {
   width: 18px;
   height: 18px;

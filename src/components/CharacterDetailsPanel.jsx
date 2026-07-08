@@ -51,7 +51,10 @@ export default function CharacterDetailsPanel({ character, darkGifts = [], onCha
 
   const handleRetire = () => {
     const name = character.name || 'this character';
-    if (confirm(`Retire ${name}? This will permanently remove this character slot and all their data.`)) {
+    const message = character.retired
+      ? `Un-retire ${name} and return them to the active roster?`
+      : `Retire ${name}? They will move to the Retired section and can be un-retired later.`;
+    if (confirm(message)) {
       onRetire();
     }
   };
@@ -91,6 +94,7 @@ export default function CharacterDetailsPanel({ character, darkGifts = [], onCha
           )}
           <h2 className="panel-character-name">
             {character.name || 'Unnamed Character'}
+            {character.retired && <span className="panel-retired-tag">(retired)</span>}
           </h2>
         </div>
 
@@ -280,8 +284,11 @@ export default function CharacterDetailsPanel({ character, darkGifts = [], onCha
                 </button>
               </div>
             </div>
-            <button className="panel-retire-btn" onClick={handleRetire}>
-              Retire Character
+            <button
+              className={`panel-retire-btn ${character.retired ? 'unretire' : ''}`}
+              onClick={handleRetire}
+            >
+              {character.retired ? 'Un-retire Character' : 'Retire Character'}
             </button>
           </div>
         </div>

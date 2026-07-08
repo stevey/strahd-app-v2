@@ -39,7 +39,7 @@ const FORTUNE_CARDS = [
   }
 ];
 
-export default function Fortunes({ fortuneNotes, onFortuneNoteChange, fortuneLocations, onFortuneLocationChange }) {
+export default function Fortunes({ fortuneNotes, onFortuneNoteChange, fortuneLocations, onFortuneLocationChange, fortuneCompleted, onFortuneCompletedToggle }) {
   const textareaRefs = useRef({});
 
   const autoResize = (textarea) => {
@@ -60,13 +60,22 @@ export default function Fortunes({ fortuneNotes, onFortuneNoteChange, fortuneLoc
         <p className="fortunes-subtitle">Madam Eva's fortunes for the campaign</p>
       </div>
       <div className="fortunes-grid">
-        {FORTUNE_CARDS.map(card => (
-          <div key={card.id} className="fortune-card">
+        {FORTUNE_CARDS.map(card => {
+          const completed = !!fortuneCompleted[card.id];
+          return (
+          <div key={card.id} className={`fortune-card ${completed ? 'completed' : ''}`}>
             <div className="fortune-card-image-wrap">
               <img src={card.image} alt={card.title} className="fortune-card-image" />
+              {completed && <div className="fortune-completed-badge">✓ Completed</div>}
             </div>
             <div className="fortune-card-body">
               <h3 className="fortune-card-title">{card.title}</h3>
+              <button
+                className="fortune-complete-toggle"
+                onClick={() => onFortuneCompletedToggle(card.id)}
+              >
+                {completed ? '↺ Mark incomplete' : '✓ Mark completed'}
+              </button>
               <div className="fortune-card-section">
                 <span className="fortune-label">Meaning</span>
                 <p className="fortune-meaning">{card.meaning}</p>
@@ -109,7 +118,8 @@ export default function Fortunes({ fortuneNotes, onFortuneNoteChange, fortuneLoc
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

@@ -113,7 +113,7 @@ function GiftCard({ gift, characters, onAssign, onUnassign, onEdit }) {
   const eligible = characters
     .map((c, i) => ({ character: c, index: i }))
     .filter(({ character }) =>
-      character.name && !(character.darkGiftIds || []).includes(gift.id)
+      character.name && !character.retired && !(character.darkGiftIds || []).includes(gift.id)
     );
 
   const handleAssignSelect = (e) => {
@@ -147,7 +147,7 @@ function GiftCard({ gift, characters, onAssign, onUnassign, onEdit }) {
           {assignedIndexes.map(({ character, index }) => (
             <span
               key={index}
-              className="gift-chip"
+              className={`gift-chip ${character.retired ? 'gift-chip-retired' : ''}`}
               style={character.color ? { borderColor: character.color } : undefined}
             >
               {character.portrait ? (
@@ -159,6 +159,7 @@ function GiftCard({ gift, characters, onAssign, onUnassign, onEdit }) {
                 />
               )}
               <span className="gift-chip-name">{character.name || 'Unnamed'}</span>
+              {character.retired && <span className="gift-chip-retired-tag">(retired)</span>}
               <button
                 className="gift-chip-remove"
                 onClick={() => handleUnassign(index, character.name)}

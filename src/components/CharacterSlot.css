@@ -203,6 +203,40 @@ input[type="text"].character-name::placeholder {
   font-weight: 600;
 }
 
+/* Retired characters: greyed out but still clearly editable */
+.character-slot.retired {
+  opacity: 0.55;
+  filter: grayscale(0.6);
+  transition: opacity 0.2s ease, filter 0.2s ease, border-color 0.2s ease;
+}
+
+.character-slot.retired:hover,
+.character-slot.retired:focus-within {
+  opacity: 0.85;
+  filter: grayscale(0.3);
+}
+
+.unretire-btn {
+  flex: 1;
+  padding: 4px 6px;
+  background: transparent;
+  border: 1px solid var(--border-dark);
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-family: var(--font-heading);
+  text-transform: lowercase;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: var(--radius-sm);
+}
+
+.unretire-btn:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-accent);
+  background: rgba(139, 0, 0, 0.1);
+}
+
 /* Action Buttons */
 .slot-actions {
   display: flex;

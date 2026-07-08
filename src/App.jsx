@@ -30,7 +30,8 @@ const DEFAULT_CHARACTER = {
   notes: '',
   dndBeyondLink: '',
   deaths: 0,
-  color: null
+  color: null,
+  retired: false
 };
 
 const DEFAULT_CHARACTERS = Array(8).fill(null).map(() => ({ ...DEFAULT_CHARACTER }));
@@ -48,6 +49,7 @@ export default function App() {
   const [cardDraw, setCardDraw] = useLocalStorage('strahd-card-draw', null);
   const [fortuneNotes, setFortuneNotes] = useLocalStorage('strahd-fortune-notes', {});
   const [fortuneLocations, setFortuneLocations] = useLocalStorage('strahd-fortune-locations', {});
+  const [fortuneCompleted, setFortuneCompleted] = useLocalStorage('strahd-fortune-completed', {});
   const [genericNpcHistory, setGenericNpcHistory] = useLocalStorage('strahd-name-history', []);
   const [specialNpcHistory, setSpecialNpcHistory] = useLocalStorage('strahd-special-npc-history', []);
   const [darkGifts, setDarkGifts] = useLocalStorage('strahd-dark-gifts', DEFAULT_DARK_GIFTS);
@@ -76,12 +78,14 @@ export default function App() {
     }
   }, []); // Only run once on mount
 
-  // Migrate existing characters to have a darkGiftIds array
+  // Migrate existing characters to have a darkGiftIds array and a retired flag
   useEffect(() => {
-    if (characters.some(c => !Array.isArray(c.darkGiftIds))) {
-      setCharacters(characters.map(c =>
-        Array.isArray(c.darkGiftIds) ? c : { ...c, darkGiftIds: [] }
-      ));
+    if (characters.some(c => !Array.isArray(c.darkGiftIds) || typeof c.retired !== 'boolean')) {
+      setCharacters(characters.map(c => ({
+        ...c,
+        darkGiftIds: Array.isArray(c.darkGiftIds) ? c.darkGiftIds : [],
+        retired: c.retired === true
+      })));
     }
   }, []); // Only run once on mount
 
@@ -159,14 +163,10 @@ export default function App() {
     setCharacters(newCharacters);
   };
 
-  const handleRetireCharacter = (index) => {
-    const newCharacters = characters.filter((_, i) => i !== index);
-    setCharacters(newCharacters);
-    if (selectedCharacterIndex === index) {
-      setSelectedCharacterIndex(null);
-    } else if (selectedCharacterIndex > index) {
-      setSelectedCharacterIndex(selectedCharacterIndex - 1);
-    }
+  const handleToggleRetire = (index) => {
+    setCharacters(characters.map((c, i) =>
+      i === index ? { ...c, retired: !c.retired } : c
+    ));
   };
 
   const handleAddCharacter = () => {
@@ -247,6 +247,10 @@ export default function App() {
     setFortuneLocations(prev => ({ ...prev, [cardId]: text }));
   };
 
+  const handleFortuneCompletedToggle = (cardId) => {
+    setFortuneCompleted(prev => ({ ...prev, [cardId]: !prev[cardId] }));
+  };
+
   // Dark Gifts
   const handleSaveDarkGift = (gift) => {
     if (gift.id) {
@@ -298,7 +302,7 @@ export default function App() {
 
   const handleExportData = () => {
     const exportData = {
-      version: '2.3',
+      version: '2.4',
       exportDate: new Date().toISOString(),
       data: {
         date,
@@ -312,6 +316,7 @@ export default function App() {
         cardDraw,
         fortuneNotes,
         fortuneLocations,
+        fortuneCompleted,
         genericNpcHistory,
         specialNpcHistory,
         darkGifts
@@ -339,12 +344,20 @@ export default function App() {
       if (data.weatherId) setWeatherId(data.weatherId);
       if (data.forecast) setForecast(data.forecast);
       if (data.forecastDate !== undefined) setForecastDate(data.forecastDate);
-      if (data.characters) setCharacters(data.characters);
+      // Normalize imported characters (older backups predate darkGiftIds/retired,
+      // and the mount-time migration won't re-run after an import)
+      if (data.characters) setCharacters(data.characters.map(c => ({
+        ...DEFAULT_CHARACTER,
+        ...c,
+        darkGiftIds: Array.isArray(c.darkGiftIds) ? c.darkGiftIds : [],
+        retired: c.retired === true
+      })));
       if (data.events) setEvents(data.events);
       if (data.weatherHistory) setWeatherHistory(data.weatherHistory);
       if (data.cardDraw !== undefined) setCardDraw(data.cardDraw);
       if (data.fortuneNotes) setFortuneNotes(data.fortuneNotes);
       if (data.fortuneLocations) setFortuneLocations(data.fortuneLocations);
+      if (data.fortuneCompleted) setFortuneCompleted(data.fortuneCompleted);
       if (data.genericNpcHistory) setGenericNpcHistory(data.genericNpcHistory);
       if (data.specialNpcHistory) setSpecialNpcHistory(data.specialNpcHistory);
       if (data.darkGifts) setDarkGifts(data.darkGifts);
@@ -440,6 +453,8 @@ export default function App() {
               onFortuneNoteChange={handleFortuneNoteChange}
               fortuneLocations={fortuneLocations}
               onFortuneLocationChange={handleFortuneLocationChange}
+              fortuneCompleted={fortuneCompleted}
+              onFortuneCompletedToggle={handleFortuneCompletedToggle}
             />
           </section>
         )}
@@ -460,18 +475,39 @@ export default function App() {
         {activeTab === 'characters' && (
           <section className="characters-section">
             <div className="characters-grid">
-              {characters.map((character, index) => (
-                <CharacterSlot
-                  key={index}
-                  character={character}
-                  onChange={(c) => handleCharacterChange(index, c)}
-                  onShowDetails={() => setSelectedCharacterIndex(index)}
-                />
-              ))}
+              {characters
+                .map((character, index) => ({ character, index }))
+                .filter(({ character }) => !character.retired)
+                .map(({ character, index }) => (
+                  <CharacterSlot
+                    key={index}
+                    character={character}
+                    onChange={(c) => handleCharacterChange(index, c)}
+                    onShowDetails={() => setSelectedCharacterIndex(index)}
+                  />
+                ))}
               <button className="add-character-btn" onClick={handleAddCharacter}>
                 + Add Character
               </button>
             </div>
+            {characters.some(c => c.retired) && (
+              <div className="retired-section">
+                <h3 className="retired-heading">Retired Characters</h3>
+                <div className="characters-grid">
+                  {characters
+                    .map((character, index) => ({ character, index }))
+                    .filter(({ character }) => character.retired)
+                    .map(({ character, index }) => (
+                      <CharacterSlot
+                        key={index}
+                        character={character}
+                        onChange={(c) => handleCharacterChange(index, c)}
+                        onShowDetails={() => setSelectedCharacterIndex(index)}
+                      />
+                    ))}
+                </div>
+              </div>
+            )}
           </section>
         )}
 
@@ -481,10 +517,7 @@ export default function App() {
             darkGifts={darkGifts}
             onChange={(c) => handleCharacterChange(selectedCharacterIndex, c)}
             onClose={() => setSelectedCharacterIndex(null)}
-            onRetire={() => {
-              handleRetireCharacter(selectedCharacterIndex);
-              setSelectedCharacterIndex(null);
-            }}
+            onRetire={() => handleToggleRetire(selectedCharacterIndex)}
           />
         )}
       </main>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { generateGenericNpc, generateSpecialNpc, specialNpcTypes } from '../data/barovianNames';
 import './NameGenerator.css';
 
@@ -16,6 +16,55 @@ export default function NameGenerator({
   const [showSpecialHistory, setShowSpecialHistory] = useState(false);
   const [copiedGeneric, setCopiedGeneric] = useState(false);
   const [copiedSpecial, setCopiedSpecial] = useState(false);
+  // { target: npc object, value: string, source: 'current' | 'history' } while
+  // renaming, else null. source matters: current and its history row are the
+  // same object, and rendering two autofocused inputs would blur-close the first
+  const [editingGeneric, setEditingGeneric] = useState(null);
+  const [editingSpecial, setEditingSpecial] = useState(null);
+  const cancelEditRef = useRef(false);
+
+  const renameNpc = (npc, raw) => {
+    const fullName = raw.trim();
+    const [firstName, ...rest] = fullName.split(/\s+/);
+    return { ...npc, fullName, firstName, familyName: rest.join(' ') };
+  };
+
+  // Match by reference — names can repeat, so matching by name would
+  // rename the wrong entry; current and its history row share one object
+  const commitRename = (editing, history, setHistory, current, setCurrent) => {
+    if (!editing || !editing.value.trim()) return;
+    const renamed = renameNpc(editing.target, editing.value);
+    setHistory(history.map(n => (n === editing.target ? renamed : n)));
+    if (current === editing.target) setCurrent(renamed);
+  };
+
+  const editKeyDown = (e) => {
+    if (e.key === 'Enter') e.target.blur();
+    if (e.key === 'Escape') {
+      cancelEditRef.current = true;
+      e.target.blur();
+    }
+  };
+
+  const renameInput = (editing, setEditing, commit) => (
+    <input
+      className="history-edit-input"
+      value={editing.value}
+      autoFocus
+      onChange={(e) => setEditing({ ...editing, value: e.target.value })}
+      onKeyDown={editKeyDown}
+      onBlur={() => {
+        if (!cancelEditRef.current) commit(editing);
+        cancelEditRef.current = false;
+        setEditing(null);
+      }}
+    />
+  );
+
+  const commitGeneric = (editing) =>
+    commitRename(editing, genericHistory, setGenericHistory, currentGeneric, setCurrentGeneric);
+  const commitSpecial = (editing) =>
+    commitRename(editing, specialHistory, setSpecialHistory, currentSpecial, setCurrentSpecial);
 
   // --- Generic NPC ---
   const handleGenerateGeneric = (gender) => {
@@ -105,11 +154,20 @@ export default function NameGenerator({
         {currentGeneric && (
           <div className="name-result special-result">
             <div className="special-result-main">
-              <span className="generated-name">{currentGeneric.fullName}</span>
+              {editingGeneric?.source === 'current' && editingGeneric.target === currentGeneric ? (
+                renameInput(editingGeneric, setEditingGeneric, commitGeneric)
+              ) : (
+                <span className="generated-name">{currentGeneric.fullName}</span>
+              )}
               {currentGeneric.identifyingFeature && (
                 <span className="npc-desc">{currentGeneric.identifyingFeature}</span>
               )}
             </div>
+            <button
+              onClick={() => setEditingGeneric({ target: currentGeneric, value: currentGeneric.fullName, source: 'current' })}
+              className="edit-btn"
+              title="Rename"
+            >✎</button>
             <button onClick={handleCopyGeneric} className="copy-btn" title="Copy to clipboard">
               {copiedGeneric ? '✓' : '⎘'}
             </button>
@@ -128,10 +186,19 @@ export default function NameGenerator({
               <ul className="history-list">
                 {genericHistory.map((name, i) => (
                   <li key={i} className={`history-item ${name.gender}`}>
-                    <span
-                      className="history-name clickable"
-                      onClick={() => { setCurrentGeneric(name); setCopiedGeneric(false); }}
-                    >{name.fullName}</span>
+                    {editingGeneric?.source === 'history' && editingGeneric.target === name ? (
+                      renameInput(editingGeneric, setEditingGeneric, commitGeneric)
+                    ) : (
+                      <span
+                        className="history-name clickable"
+                        onClick={() => { setCurrentGeneric(name); setCopiedGeneric(false); }}
+                      >{name.fullName}</span>
+                    )}
+                    <button
+                      className="history-edit"
+                      onClick={() => setEditingGeneric({ target: name, value: name.fullName, source: 'history' })}
+                      title="Rename"
+                    >✎</button>
                     <button
                       className="history-delete"
                       onClick={() => deleteGeneric(i)}
@@ -191,10 +258,14 @@ export default function NameGenerator({
         {currentSpecial && (
           <div className="name-result special-result">
             <div className="special-result-main">
-              <span className="generated-name">
-                {currentSpecial.isFormerAdventurer && <span className="npc-star">★</span>}
-                {currentSpecial.fullName}
-              </span>
+              {editingSpecial?.source === 'current' && editingSpecial.target === currentSpecial ? (
+                renameInput(editingSpecial, setEditingSpecial, commitSpecial)
+              ) : (
+                <span className="generated-name">
+                  {currentSpecial.isFormerAdventurer && <span className="npc-star">★</span>}
+                  {currentSpecial.fullName}
+                </span>
+              )}
               <span className="npc-type-badge">{typeLabel(currentSpecial.npcType)}</span>
               {currentSpecial.isFormerAdventurer && (
                 <span className="npc-class-line">
@@ -203,6 +274,11 @@ export default function NameGenerator({
               )}
               <span className="npc-desc">{currentSpecial.description}</span>
             </div>
+            <button
+              onClick={() => setEditingSpecial({ target: currentSpecial, value: currentSpecial.fullName, source: 'current' })}
+              className="edit-btn"
+              title="Rename"
+            >✎</button>
             <button onClick={handleCopySpecial} className="copy-btn" title="Copy to clipboard">
               {copiedSpecial ? '✓' : '⎘'}
             </button>
@@ -221,14 +297,23 @@ export default function NameGenerator({
               <ul className="history-list">
                 {specialHistory.map((npc, i) => (
                   <li key={i} className={`history-item special-history-item${npc.isFormerAdventurer ? ' adventurer' : ''}`}>
-                    <span
-                      className="history-item-content clickable"
-                      onClick={() => { setCurrentSpecial(npc); setCopiedSpecial(false); }}
-                    >
-                      {npc.isFormerAdventurer && <span className="npc-star">★</span>}
-                      <span className="history-name">{npc.fullName}</span>
-                      <span className="npc-type-badge">{typeLabel(npc.npcType)}</span>
-                    </span>
+                    {editingSpecial?.source === 'history' && editingSpecial.target === npc ? (
+                      renameInput(editingSpecial, setEditingSpecial, commitSpecial)
+                    ) : (
+                      <span
+                        className="history-item-content clickable"
+                        onClick={() => { setCurrentSpecial(npc); setCopiedSpecial(false); }}
+                      >
+                        {npc.isFormerAdventurer && <span className="npc-star">★</span>}
+                        <span className="history-name">{npc.fullName}</span>
+                        <span className="npc-type-badge">{typeLabel(npc.npcType)}</span>
+                      </span>
+                    )}
+                    <button
+                      className="history-edit"
+                      onClick={() => setEditingSpecial({ target: npc, value: npc.fullName, source: 'history' })}
+                      title="Rename"
+                    >✎</button>
                     <button
                       className="history-delete"
                       onClick={() => deleteSpecial(i)}
