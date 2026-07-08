@@ -20,6 +20,7 @@ The session-start dashboard. Everything the DM needs to set the scene at a glanc
   - **Special NPCs** — Choose a type (Werewolf, Wereraven, Vampire Spawn, Witch) and gender, then generate a named NPC with a themed appearance trait. Roughly 1-in-4 are marked ★ as former adventurers, complete with a D&D 5.5e race and class. Vampire spawn draw from a mix of Barovian and common fantasy names; starred vampire spawn use non-Barovian names only. Witches are never former adventurers and always draw from a dedicated pool of evocative witch names.
   - All features are appearance-based — usable the moment the NPC walks in the door.
   - Full history for both columns (up to 20 entries each) with per-item delete. Click any history entry to restore its full details. Histories are included in backup exports and imports.
+  - **Inline rename** — a ✎ button on the current NPC and every history entry lets you rename an NPC in place (Enter/click-away saves, Esc cancels); the appearance details are kept.
 
 ### 📅 Timeline Tab
 A scrollable horizontal campaign timeline showing 3 weeks at a time.
@@ -37,12 +38,13 @@ Tracks Madam Eva's Tarokka reading for the campaign.
 - Each card shows its tarokka artwork, the reading's **Meaning**, and the **Clue** given to players.
 - **DM Notes** — a free-text field per card for session notes.
 - **🔒 Secret Location** — a hidden field that is blurred by default and only revealed on hover. Keeps the actual location off-screen when players might be watching.
+- **Mark completed** — toggle a card once the party has resolved its prophecy; the card dims with a ✓ COMPLETED badge over the art (notes stay editable, and it can be toggled back).
 
 ### 🦇 Dark Gifts Tab
 A full compendium of the banes and boons the Dark Powers bestow on characters who die in Barovia.
 
 - **Two seeded rule sets** — the *Expanded Dark Gifts* table (DDAL04 Adventurers League) and the *Darker Gifts* supplement, each gift shown as a card with its d20 roll number, a short evocative title, and the complete rules text.
-- **Assign to characters** — every card has an assign dropdown listing the current party. Assigned characters appear as chips (portrait or colour dot + name) with one-click removal. A gift can be held by any number of characters, but **a character can never receive the same gift twice** — the UI enforces it.
+- **Assign to characters** — every card has an assign dropdown listing the current party (retired characters are excluded). Assigned characters appear as chips (portrait or colour dot + name) with one-click removal; a retired holder's chip is greyed with a *(retired)* tag. A gift can be held by any number of characters, but **a character can never receive the same gift twice** — the UI enforces it.
 - **Search & filter** — free-text search across titles, rules text, and roll numbers, plus a "Bestowed only" toggle to see just the gifts currently in play.
 - **Fully editable** — add homebrew gifts (with optional d20 number and list placement), edit any gift's text, or delete a gift entirely (deleting also removes it from every character holding it).
 
@@ -55,12 +57,12 @@ Slots for up to 8 (expandable) player characters.
 - **Dark Gifts cross-reference** — the details panel lists the character's bestowed dark gifts as collapsible entries (click to expand the full rules text), with a dropdown to bestow new ones and one-click removal. Stays in sync with the Dark Gifts tab.
 - Death counter (💀) per character.
 - D&D Beyond character sheet link.
-- Retire a character to remove their slot.
+- **Retire / un-retire** — retiring a character moves them to a greyed-out *Retired Characters* section below the roster instead of deleting them. Retired characters keep all their data, stay fully editable, drop out of Dark Gifts assignment dropdowns, and can be brought back at any time from the slot or the details panel.
 
 ### 💾 Backup & Restore
 - **Export** — downloads a complete JSON snapshot of all campaign data (date, time, weather, forecast, events, characters, fortunes, card draw, NPC histories, dark gifts).
-- **Import** — restores from any v2.1, v2.2, or v2.3 backup file. Fully backwards-compatible.
-- Current export version: `2.3`
+- **Import** — restores from any v2.1 through v2.4 backup file. Fully backwards-compatible (older characters are upgraded on import).
+- Current export version: `2.4`
 
 ---
 
