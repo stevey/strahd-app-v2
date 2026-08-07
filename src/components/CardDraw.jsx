@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import './CardDraw.css';
 
-const CARD_VALUES = ['+1', '+2', '+3', '+4', '+5'];
+const CARD_VALUES = ['-1', '+1', '+2', '+3', '+4', '+5', '+6'];
+const RARE_VALUES = ['-1', '+6'];
 
 export default function CardDraw({ value, onChange }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const isSpecial = value === '+5';
+  const isRare = RARE_VALUES.includes(value);
 
   const modal = isModalOpen ? createPortal(
     <div className="modal-overlay" onClick={() => setIsModalOpen(false)}>
@@ -23,7 +25,7 @@ export default function CardDraw({ value, onChange }) {
           {CARD_VALUES.map((cardValue) => (
             <button
               key={cardValue}
-              className={`card-option ${cardValue === '+5' ? 'special' : ''} ${value === cardValue ? 'active' : ''}`}
+              className={`card-option ${cardValue === '+5' ? 'special' : ''} ${RARE_VALUES.includes(cardValue) ? 'rare' : ''} ${value === cardValue ? 'active' : ''}`}
               onClick={() => {
                 onChange(cardValue);
                 setIsModalOpen(false);
@@ -53,7 +55,7 @@ export default function CardDraw({ value, onChange }) {
   return (
     <>
       <button
-        className={`card-draw-display ${isSpecial ? 'special' : ''}`}
+        className={`card-draw-display ${isSpecial ? 'special' : ''} ${isRare ? 'rare' : ''}`}
         onClick={() => setIsModalOpen(true)}
         title="Session card draw - click to change"
       >

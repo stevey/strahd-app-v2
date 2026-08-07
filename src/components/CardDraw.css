@@ -29,6 +29,57 @@
   border-color: var(--text-accent);
 }
 
+/* Rare Holo-Foil (for the -1 and +6 draws) */
+.card-draw-display.rare,
+.card-option.rare {
+  position: relative;
+  background: #0a0a0f;
+  border: none;
+}
+
+.card-draw-display.rare::before,
+.card-option.rare::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: linear-gradient(115deg, #ff6ec7, #ffd36e, #6ef0c2, #6ec7ff, #b06eff, #ff6ec7);
+  background-size: 400% 400%;
+  animation: holo-shift 5s ease infinite;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.card-draw-display.rare::after,
+.card-option.rare::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 10px rgba(180, 140, 255, 0.55), inset 0 0 8px rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+.card-draw-display.rare:hover::before,
+.card-option.rare:hover::before {
+  animation-duration: 2s;
+}
+
+.card-draw-display.rare .card-value {
+  position: relative;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.7), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+@keyframes holo-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .card-value {
   font-family: var(--font-heading);
   font-size: 0.85rem;
@@ -103,6 +154,15 @@
 
 .card-option.special.active {
   box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.card-option.rare {
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.7), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.card-option.rare.active::after {
+  box-shadow: 0 0 16px rgba(180, 140, 255, 0.8), inset 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
 /* Actions */

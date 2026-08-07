@@ -9,6 +9,7 @@ export default function CharacterSlot({ character, onChange, onShowDetails }) {
   const [isDragging, setIsDragging] = useState(false);
 
   const deaths = character.deaths || 0;
+  const darkGiftCount = (character.darkGiftIds || []).length;
 
   const handleNameChange = (e) => {
     onChange({ ...character, name: e.target.value });
@@ -126,10 +127,20 @@ export default function CharacterSlot({ character, onChange, onShowDetails }) {
         <div className="upload-error">{uploadError}</div>
       )}
 
-      {deaths > 0 && (
-        <div className="death-indicator">
-          <span className="death-skull">💀</span>
-          <span className="death-count">{deaths}</span>
+      {(deaths > 0 || darkGiftCount > 0) && (
+        <div className="status-indicators">
+          {deaths > 0 && (
+            <div className="death-indicator">
+              <span className="death-skull">💀</span>
+              <span className="death-count">{deaths}</span>
+            </div>
+          )}
+          {darkGiftCount > 0 && (
+            <div className="darkgift-indicator" title="Dark gifts">
+              <span className="darkgift-icon">😈</span>
+              <span className="darkgift-count">{darkGiftCount}</span>
+            </div>
+          )}
         </div>
       )}
 

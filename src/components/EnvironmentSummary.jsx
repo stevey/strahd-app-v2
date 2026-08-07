@@ -72,7 +72,7 @@ export default function EnvironmentSummary({ date, time, weatherId, cardDraw }) 
         <div className="env-row">
           <div className="env-label">Session Card</div>
           <div className="env-card-value">
-            <span className={`env-card-drawn ${cardDraw === '+5' ? 'special' : ''}`}>
+            <span className={`env-card-drawn ${cardDraw === '+5' ? 'special' : ''} ${['-1', '+6'].includes(cardDraw) ? 'rare' : ''}`}>
               {cardDraw || 'None'}
             </span>
           </div>

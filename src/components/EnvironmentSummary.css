@@ -250,6 +250,45 @@
   box-shadow: 0 0 12px rgba(139, 0, 0, 0.4);
 }
 
+/* Rare Holo-Foil (for the -1 and +6 draws) */
+.env-card-drawn.rare {
+  position: relative;
+  background: #0a0a0f;
+  border: none;
+  color: #fff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.7), 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.env-card-drawn.rare::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  border-radius: inherit;
+  background: linear-gradient(115deg, #ff6ec7, #ffd36e, #6ef0c2, #6ec7ff, #b06eff, #ff6ec7);
+  background-size: 400% 400%;
+  animation: env-holo-shift 5s ease infinite;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.env-card-drawn.rare::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 10px rgba(180, 140, 255, 0.55), inset 0 0 8px rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+}
+
+@keyframes env-holo-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 /* Tagline */
 .env-tagline {
   font-family: var(--font-body);
