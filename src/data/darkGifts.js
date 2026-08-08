@@ -267,6 +267,6 @@ export const DEFAULT_DARK_GIFTS = [
     list: 'darker',
     number: 20,
     title: 'Necrotic Flesh',
-    description: "The character's flesh becomes affected by necrosis and there is a risk that limbs are lost. Each time the character suffers slashing damage equal to or higher than their Constitution score, they must succeed on a Constitution saving throw or have a limb severed off. The DC for this saving throw is the amount of damage taken, and the severed limb is decided upon by the GM. A lost limb reattaches to the body if held in place during a short rest, or a new one grows after a period of 24 hours. If the character is decapitated, the body will continue to function normally but is considered blind and deafened. Neither a new head nor a new body can be grown; both must be reunited."
+    description: "The character's flesh becomes affected by necrosis and there is a risk that limbs are lost. Each time the character suffers slashing damage equal to or higher than their Constitution score, they must succeed on a Constitution saving throw or have a limb severed off. The DC for this saving throw is the amount of damage taken, and the severed limb is decided upon by the GM. A lost limb reattaches to the body if held in place during a short rest, or a new one grows after a period of 24 hours. If the character is decapitated, the body will continue to function normally but is considered blind and deafened. Neither a new head nor a new body can be grown; both must be reunited. The character has advantage on any 1st death save."
   }
 ];
